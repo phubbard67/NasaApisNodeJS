@@ -62,18 +62,18 @@ const GetAsteroidNeoData = function(ApiKey)
             console.log(error);
         }
         else{
-            console.log("========================Astroid / NEOs APIs>");
-            console.log("\n\n===NEOs Feed API>");
+            console.log("\n========================Astroid / NEO APIs>");
+            console.log("\n===NEO Feed API>");
             //Read out all Near Earth Ojects found
             const nNumberOfNEOs = response.body.element_count;
-            console.log(`NEOs That are the closest to Earth in the next 7 days:`);
-            console.log(`   Number of NEOs in the Next 7 Days: ${nNumberOfNEOs}`);
+            console.log(`Astroids That are the closest to Earth in the next 7 days:`);
+            console.log(`   Number of Asteroids in the Next 7 Days: ${nNumberOfNEOs}`);
             const NearEarthObjects = response.body.near_earth_objects;
             for(const date in NearEarthObjects)
             {
                 if(response.body.hasOwnProperty.call(NearEarthObjects, date)){
                     const NEOs = NearEarthObjects[date];
-                    console.log(`NEOs for Date: ${date}`);
+                    console.log(`Astroids for Date: ${date}`);
                     for(i = 0; i < nNumberOfNEOs; ++i)
                     {
                         console.log(`Astroid Name: ${NEOs[i].name}\nAstroid Potentially Hazardous: ${NEOs[i].is_potentially_hazardous_asteroid}`);
@@ -92,7 +92,7 @@ const GetAsteroidNeoData = function(ApiKey)
         }
         else{
             //Break up the data
-            console.log("\n\n===NEOs Search API>");
+            console.log("\n\n===Astroid Search API>");
             console.log(`NEO API Hazard Result for Astriod: ${AsteroidPKNine}`)
             console.log(`Astriod Name: ${response.body.name}\nPotentially Hazardous to Earth: ${response.body.is_potentially_hazardous_asteroid}`);
         }
@@ -106,11 +106,11 @@ const GetAsteroidNeoData = function(ApiKey)
             console.log(error);
         }
         else{
-            console.log("\n\n===NEOs Browse API>");
+            console.log("\n\n===Astroid Browse API>");
             //Read out all Near Earth Ojects found
             const nNumberOfNEOs = response.body.page.size;
             console.log(`Astroids Returned from the Browse API:`);
-            console.log(`   Number of NEOs: ${nNumberOfNEOs}`);
+            console.log(`   Number of Astroids: ${nNumberOfNEOs}`);
             const NearEarthObjects = response.body.near_earth_objects;
             for(i = 0; i < nNumberOfNEOs; ++i)
             {
@@ -145,6 +145,8 @@ const GetAsteroidNeoData = function(ApiKey)
  
 //--------------------Main App Functionality 
 try{
+    console.log("\n\n\n");
+    console.log("====================================The Data Starts HERE==================================\n\n\n")
     //Get the API File data:
     // NOTE: If you want to create your own file, just 
     //        create it and put the following code inside to work with this API
