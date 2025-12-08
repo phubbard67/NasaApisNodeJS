@@ -1,8 +1,8 @@
-# Walking Stalking Robots Website
-I built this website for my band [Walking Stalking Robots](https://walkingstalkingrobots.com)
+# Nasa APIs NodeJS
+This NodeJS App was made to test out and use the [APIs that NASA has to offer](https://api.nasa.gov/)
 
 ## Technologies Used
-The project uses information from [NASA]([https://www.noaa.gov](https://api.nasa.gov/)). 
+The project uses information from [NASA](https://api.nasa.gov/). 
 
 It is built using NodeJS
 - To build, download the code and install npm v10.8.2 (or later, but this is the old version I use)
