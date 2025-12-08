@@ -10,6 +10,7 @@ It is built using NodeJS
 - To run, open a terminal in the folder with App.js and run the command  `node App.js`
 
 ## License
+You are permitted to use this codebase under the [MIT OpenSource License](https://github.com/phubbard67/NasaApisNodeJS/blob/master/LICENSE)
 
 ## Contact
 
