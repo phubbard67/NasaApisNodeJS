@@ -131,7 +131,7 @@ const GetAsteroidNeoData = function(ApiKey)
                         intYearBuffer = parseInt(approchYearBuffer);
                         j++;
                     }
-                    console.log(`---------------------Next Potential Planet of Colision: ${PotentialCloseCallDates[j].orbiting_body}\n---Date of Potential Colision: ${PotentialCloseCallDates[j].close_approach_date_full}\n`);
+                    console.log(`---------------------Next Planet of Close Approach: ${PotentialCloseCallDates[j].orbiting_body}\n---Date of Close Approach to ${PotentialCloseCallDates[j].orbiting_body}: ${PotentialCloseCallDates[j].close_approach_date_full}\n`);
                 }
                 else
                 {
