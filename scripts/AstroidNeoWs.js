@@ -1,3 +1,12 @@
+// MIT License
+
+// Copyright (c) 2025 Paul Elliott Hubbard
+
+//-----------This Node module calls data from 
+//------        From all available AstroidNeoWs APIs
+//------        at this time, and displays some data of 
+//------        of interest. Its just a demo... for now. 
+//----------------------------------------------Global Vars
 const request = require('request');
 const common = require('./commonModule');
 const CurrentDate = new Date();
