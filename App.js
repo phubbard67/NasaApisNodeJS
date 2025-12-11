@@ -24,11 +24,22 @@ try{
     //[NASA_API]
     //API_KEY='yourApiKeyGoesBetweenTheseQuotes'
     //----------Comment out or remove if not Using INI file and replace ApiKey with your key value.
-    const config = fs.readFileSync("../my_api_keys.ini", "utf-8");
-    const ApiDatabase = ini.parse(config)
-    //---End Comment our or remove...
-
-    const ApiKey = ApiDatabase.NASA_API.API_KEY;
+    ApiKey = "";
+    try{
+        const config = fs.readFileSync("../my_api_key.ini", "utf-8");
+        const ApiDatabase = ini.parse(config)
+        //---End Comment our or remove...
+    
+        ApiKey = ApiDatabase.NASA_API.API_KEY;
+    }
+    catch(error)
+    {
+        console.log("NO API KEY FOUND: Demo Key used instead. Please set a key in App.js if you want more data pulls.")
+        if(ApiKey == "")
+        {
+            ApiKey = "DEMO_KEY";
+        }
+    }
     
     AstroidNeoWs.GetAsteroidNeoDataFunc(ApiKey);
 
