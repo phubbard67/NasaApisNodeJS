@@ -26,11 +26,12 @@ try{
     //----------Comment out or remove if not Using INI file and replace ApiKey with your key value.
     ApiKey = "";
     try{
-        const config = fs.readFileSync("../my_api_key.ini", "utf-8");
+        const config = fs.readFileSync("../my_api_keys.ini", "utf-8");
         const ApiDatabase = ini.parse(config)
         //---End Comment our or remove...
     
         ApiKey = ApiDatabase.NASA_API.API_KEY;
+        console.log(`API KEY FOUND: ${ApiKey}`);
     }
     catch(error)
     {
