@@ -2,23 +2,12 @@
 
 // Copyright (c) 2025 Paul Elliott Hubbard
 
-//----------------------------------------------Helper Functions
-const GetTwoDigitString = function(nNumberToConver)
-{
-    if(nNumberToConver < 10)
-    {
-       return `0${nNumberToConver}`;
-    }
-    else
-    {
-        return `${nNumberToConver}`
-    }
-}
 
 //----------------------------------------------Global Vars
 const request = require('request');
 const fs = require('fs');
 const ini = require('ini');
+const common = require('./scripts/commonModule');
 const CurrentDate = new Date();
 
 //---Astroid NeoWs Vars
@@ -27,14 +16,14 @@ const DateInSevenDays = new Date();
 DateInSevenDays.setDate(CurrentDate.getDate() + 7);
 
 nDay = CurrentDate.getDate();
-strDay = GetTwoDigitString(nDay);
+strDay = common.GetTwoDigitStringFunc(nDay);
 nMonth = CurrentDate.getMonth();
-strMonth = GetTwoDigitString(nMonth);
+strMonth = common.GetTwoDigitStringFunc(nMonth);
 
 nSevenDays = DateInSevenDays.getDate();
-strSevenDays = GetTwoDigitString(nSevenDays);
+strSevenDays = common.GetTwoDigitStringFunc(nSevenDays);
 nMonthInSevenDays = DateInSevenDays.getMonth();
-strMonthInSevenDays = GetTwoDigitString(nMonthInSevenDays);
+strMonthInSevenDays = common.GetTwoDigitStringFunc(nMonthInSevenDays);
 
 const AstroidStartDate = `${CurrentDate.getFullYear()}-${strMonth}-${strDay}`;
 const AstroidEndDate = `${DateInSevenDays.getFullYear()}-${strSevenDays}-${strMonthInSevenDays}`;
@@ -42,7 +31,7 @@ const AstroidEndDate = `${DateInSevenDays.getFullYear()}-${strSevenDays}-${strMo
 //Neo Lookup Vars
 const AsteroidPKNine = '3542519'
 
-const options = {
+const AstroidNeoWsOptions = {
     //-------------------------------------------------Astroid NeoWs
     //---Neo - Feed
     ApiAstroidNeoFeed: `https://api.nasa.gov/neo/rest/v1/feed?start_date=${AstroidStartDate}&end_date=${AstroidStartDate}&api_key=`,
@@ -56,7 +45,7 @@ const options = {
 const GetAsteroidNeoData = function(ApiKey)
 {
     //======================Get the Asteriod Feed Information
-    const CurrentAsteriodFeed = request({url: `${options.ApiAstroidNeoFeed}${ApiKey}`, json: true, headers: options.headers}, function(error, response){
+    const CurrentAsteriodFeed = request({url: `${AstroidNeoWsOptions.ApiAstroidNeoFeed}${ApiKey}`, json: true, headers: AstroidNeoWsOptions.headers}, function(error, response){
         if(error){
             console.log("Portland... We have problem");
             console.log(error);
@@ -85,7 +74,7 @@ const GetAsteroidNeoData = function(ApiKey)
     //===End Astroid Feed
 
     //======================Get A particular Asteroid
-    const CurrentCeresInformation = request({url: `${options.ApiAstriodLookup}${ApiKey}`, json: true, headers: options.headers}, function(error, response){
+    const CurrentCeresInformation = request({url: `${AstroidNeoWsOptions.ApiAstriodLookup}${ApiKey}`, json: true, headers: AstroidNeoWsOptions.headers}, function(error, response){
         if(error){
             console.log("Portland... We have problem");
             console.log(error);
@@ -100,7 +89,7 @@ const GetAsteroidNeoData = function(ApiKey)
     //===End Get A Particular Asteroid
 
     //======================Browse all NEO Data
-    const CurrentBrowseInformation = request({url: `${options.ApiAsteroidBrowse}${ApiKey}`, json: true, headers: options.headers}, function(error, response){
+    const CurrentBrowseInformation = request({url: `${AstroidNeoWsOptions.ApiAsteroidBrowse}${ApiKey}`, json: true, headers: AstroidNeoWsOptions.headers}, function(error, response){
         if(error){
             console.log("Portland... We have problem");
             console.log(error);
@@ -163,6 +152,8 @@ try{
     const ApiKey = ApiDatabase.NASA_API.API_KEY;
     
     GetAsteroidNeoData(ApiKey);
+
+    //TODO: Next up... SPACE WEATHER
 
 
 }catch(error){
