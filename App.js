@@ -14,7 +14,8 @@ const CurrentDate = new Date();
 //--------------------Main App Functionality 
 try{
     console.log("\n\n\n");
-    console.log("====================================The Data Starts HERE==================================\n\n\n")
+    console.log(`====================================The Data Starts HERE==================================`)
+    console.log(`====Date: \n--------->${CurrentDate}\n\n\n`);
     //Get the API File data:
     // NOTE: If you want to create your own file, just 
     //        create it and put the following code inside to work with this API
