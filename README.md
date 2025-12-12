@@ -3,6 +3,9 @@ This NodeJS App was made to test out and use the [APIs that NASA has to offer](h
 
 ## Technologies Used
 The project uses information from [NASA](https://api.nasa.gov/). 
+### Apis Implemented So Far...
+- [The AstroidNeoWs APIs](https://api.nasa.gov/)
+- [The Notifications API for DONKI](https://api.nasa.gov/)
 
 It is built using NodeJS
 - To build, download the code and install npm v10.8.2 (or later, but this is the old version I use)
