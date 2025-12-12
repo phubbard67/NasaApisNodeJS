@@ -62,7 +62,7 @@ function GetDONKINotifications(ApiKey)
     request({url: `${DONKIOptions.ApiDONKINotifications}${ApiKey}`, json: true}, function(error, response){
             if(error){
                 console.log("Portland... We have problem");
-                console.log(error);
+                console.log(`${error}`);
             }
             else{
                 console.log("\n\n====================-------------------------------------DONKI Notifcation API for the past seven days>");
@@ -81,10 +81,34 @@ function GetDONKINotifications(ApiKey)
     });
 }
 
+function GetDONKICME(ApiKey)
+{
+    request({url: `${DONKIOptions.ApiDONKICME}${ApiKey}`, json: true}, function(error, response){
+        if(error)
+        {
+            console.log("Portland... We have a problem");
+            console.log(`${error}`);
+        }
+        else{
+            console.log("\n\n====================-------------------------------------DONKI Coronal Mass Ejections API for the past seven days>");
+            const CMEData = response.body;
+            for(CMEActivity in CMEData)
+            {
+                if(response.body.hasOwnProperty.call(CMEData, CMEActivity)){
+                    console.log(`---CME Activity ID: ${CMEData[CMEActivity].activityID}`);
+                    console.log(`---CME Submission Time ${CMEData[CMEActivity].submissionTime}`);
+                    console.log(`---CME NOTE: \n    ${CMEData[CMEActivity].note}\n`)
+                }
+            }
+        }
+    });
+}
+
 
 function GetDONKIData(ApiKey)
 {
     GetDONKINotifications(ApiKey);
+    GetDONKICME(ApiKey);
 }
 
 module.exports = {
