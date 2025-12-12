@@ -112,5 +112,7 @@ function GetDONKIData(ApiKey)
 }
 
 module.exports = {
-    GetDONKIDataFunc : GetDONKIData
+    GetDONKIDataFunc          : GetDONKIData,
+    GetDONKINotificationsFunc : GetDONKINotifications,
+    GetDONKICMEFunc           : GetDONKICME
 }
