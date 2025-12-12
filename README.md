@@ -7,6 +7,7 @@ The project uses information from [NASA](https://api.nasa.gov/).
 - [All of The AstroidNeoWs APIs](https://api.nasa.gov/#browseAPI)
 - [The Notifications API for DONKI](https://api.nasa.gov/#browseAPI)
 
+## Build
 It is built using NodeJS
 - To build, download the code and install npm v10.8.2 (or later, but this is the old version I use)
 - Then, from the folder NasaApis/ open a terminal and run `npm install` or `npm -i`
