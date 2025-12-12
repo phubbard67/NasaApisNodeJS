@@ -9,6 +9,7 @@ const fs = require('fs');
 const ini = require('ini');
 const common = require('./scripts/commonModule');
 const AstroidNeoWs = require('./scripts/AstroidNeoWs');
+const DONKI = require('./scripts/DONKI');
 const CurrentDate = new Date();
  
 //--------------------Main App Functionality 
@@ -46,6 +47,7 @@ try{
     AstroidNeoWs.GetAsteroidNeoWsDataFunc(ApiKey);
 
     //TODO: Next up... SPACE WEATHER
+    DONKI.GetDONKIDataFunc(ApiKey);
 
 
 }catch(error){
