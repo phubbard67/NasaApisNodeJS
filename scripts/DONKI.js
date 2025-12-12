@@ -3,7 +3,7 @@
 // Copyright (c) 2025 Paul Elliott Hubbard
 
 //-----------This Node module calls data from 
-//------        From all available AstroidNeoWs APIs
+//------        From all available DONKI Space Weather APIs
 //------        at this time, and displays some data of 
 //------        of interest. Its just a demo... for now. 
 //----------------------------------------------Global Vars
