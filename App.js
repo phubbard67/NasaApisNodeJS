@@ -36,14 +36,14 @@ try{
     }
     catch(error)
     {
-        console.log("NO API KEY FOUND: Demo Key used instead. Please set a key in App.js if you want more data pulls.")
+        console.log("NO API KEY FOUND: Demo Key used instead (DEMO_KEY). \nPlease set a key in App.js if you want more data pulls above the Demo rate limits.")
         if(ApiKey == "")
         {
             ApiKey = "DEMO_KEY";
         }
     }
     
-    AstroidNeoWs.GetAsteroidNeoDataFunc(ApiKey);
+    AstroidNeoWs.GetAsteroidNeoWsDataFunc(ApiKey);
 
     //TODO: Next up... SPACE WEATHER
 

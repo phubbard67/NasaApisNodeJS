@@ -11,48 +11,53 @@ const request = require('request');
 const common = require('./commonModule');
 const CurrentDate = new Date();
 
-//---Astroid NeoWs Vars
-//Neo Feed Vars
+//---AstroidNeoWs Vars
 const DateInSevenDays = new Date();
 DateInSevenDays.setDate(CurrentDate.getDate() + 7);
 
 nDay = CurrentDate.getDate();
 strDay = common.GetTwoDigitStringFunc(nDay);
-nMonth = CurrentDate.getMonth();
+nMonth = CurrentDate.getMonth() + 1;
 strMonth = common.GetTwoDigitStringFunc(nMonth);
 
 nSevenDays = DateInSevenDays.getDate();
 strSevenDays = common.GetTwoDigitStringFunc(nSevenDays);
-nMonthInSevenDays = DateInSevenDays.getMonth();
+nMonthInSevenDays = DateInSevenDays.getMonth() + 1;
 strMonthInSevenDays = common.GetTwoDigitStringFunc(nMonthInSevenDays);
 
 const AstroidStartDate = `${CurrentDate.getFullYear()}-${strMonth}-${strDay}`;
-const AstroidEndDate = `${DateInSevenDays.getFullYear()}-${strSevenDays}-${strMonthInSevenDays}`;
+const AstroidEndDate = `${DateInSevenDays.getFullYear()}-${strMonthInSevenDays}-${strSevenDays}`;
 
-//Neo Lookup Vars
+//---AstroidNeoWs Lookup Vars
 const AsteroidPKNine = '3542519'
 
 const AstroidNeoWsOptions = {
     //-------------------------------------------------Astroid NeoWs
-    //---Neo - Feed
-    ApiAstroidNeoFeed: `https://api.nasa.gov/neo/rest/v1/feed?start_date=${AstroidStartDate}&end_date=${AstroidStartDate}&api_key=`,
-    //---Neo - Lookup by Astroid ID
-    ApiAstriodLookup: `https://api.nasa.gov/neo/rest/v1/neo/${AsteroidPKNine}?api_key=`,
-    //---New - Browse all NEO data
-    ApiAsteroidBrowse: `https://api.nasa.gov/neo/rest/v1/neo/browse?api_key=`
+    //---AstroidNeoWs - Feed
+    ApiAstroidNeoWsFeed: `https://api.nasa.gov/neo/rest/v1/feed?start_date=${AstroidStartDate}&end_date=${AstroidEndDate}&api_key=`,
+    //---AstroidNeoWs - Lookup by Astroid ID
+    ApiAstriodNeoWsLookup: `https://api.nasa.gov/neo/rest/v1/neo/${AsteroidPKNine}?api_key=`,
+    //---AstroidNeoWs - Browse all NEO data
+    ApiAsteroidNeoWsBrowse: `https://api.nasa.gov/neo/rest/v1/neo/browse?api_key=`
 }  
 
-function GetAsteroidNeoData(ApiKey)
+function GetAsteroidNeoWsData(ApiKey)
 {
     //======================Get the Asteriod Feed Information
-    const CurrentAsteriodFeed = request({url: `${AstroidNeoWsOptions.ApiAstroidNeoFeed}${ApiKey}`, json: true, headers: AstroidNeoWsOptions.headers}, function(error, response){
+    const CurrentAsteriodFeed = request({url: `${AstroidNeoWsOptions.ApiAstroidNeoWsFeed}${ApiKey}`, json: true, headers: AstroidNeoWsOptions.headers}, function(error, response){
         if(error){
             console.log("Portland... We have problem");
             console.log(error);
         }
         else{
+
+            console.log(`Astroid Start Date: ${AstroidStartDate}`);
+            console.log(`Astroid End Date: ${AstroidEndDate}`);
+
+            console.log(`API End Date: ${AstroidEndDate}\n\n`)
             console.log("\n========================Astroid / NEO APIs>");
             console.log("\n===NEO Feed API>");
+            console.log(response.body);
             //Read out all Near Earth Ojects found
             const nNumberOfNEOs = response.body.element_count;
             console.log(`Astroids That are the closest to Earth in the next 7 days:`);
@@ -63,9 +68,33 @@ function GetAsteroidNeoData(ApiKey)
                 if(response.body.hasOwnProperty.call(NearEarthObjects, date)){
                     const NEOs = NearEarthObjects[date];
                     console.log(`Astroids for Date: ${date}`);
-                    for(i = 0; i < nNumberOfNEOs; ++i)
+                    for(const NearEarthObject in NEOs)
                     {
-                        console.log(`Astroid Name: ${NEOs[i].name}\nAstroid Potentially Hazardous: ${NEOs[i].is_potentially_hazardous_asteroid}`);
+                        if(response.body.hasOwnProperty.call(NEOs, NearEarthObject)){
+
+                            if(NEOs[NearEarthObject].is_potentially_hazardous_asteroid == true)
+                            {
+                                console.log(`\n------------------------------Astroid Name: ${NEOs[NearEarthObject].name}\n-POTENTIALLY HAZARDOUS TO EARTH!!!!!!!!!!!!`)
+                                const PotentialCloseCallDates = NEOs[NearEarthObject].close_approach_data;
+                                let dateBuff = PotentialCloseCallDates[0].close_approach_date;
+                                let approchYearBuffer = dateBuff.substring(0, 4);
+                                let intYearBuffer = parseInt(approchYearBuffer);
+
+                                j = 0;
+                                while(intYearBuffer < CurrentDate.getFullYear())
+                                {
+                                    dateBuff = PotentialCloseCallDates[j].close_approach_date;
+                                    approchYearBuffer = dateBuff.substring(0, 4);
+                                    intYearBuffer = parseInt(approchYearBuffer);
+                                    j++;
+                                }
+                                console.log(`---------------------Next Planet of Close Approach: ${PotentialCloseCallDates[j].orbiting_body}\n---Date of Close Approach to ${PotentialCloseCallDates[j].orbiting_body}: ${PotentialCloseCallDates[j].close_approach_date_full}\n`);
+                            }
+                            else{
+                                console.log(`Astroid Name: ${NEOs[NearEarthObject].name}`);
+                                console.log(`Astroid Potentially Hazardous: ${NEOs[NearEarthObject].is_potentially_hazardous_asteroid}`);
+                            }
+                        }
                     }
                 }
             }
@@ -74,7 +103,7 @@ function GetAsteroidNeoData(ApiKey)
     //===End Astroid Feed
 
     //======================Get A particular Asteroid
-    const CurrentCeresInformation = request({url: `${AstroidNeoWsOptions.ApiAstriodLookup}${ApiKey}`, json: true, headers: AstroidNeoWsOptions.headers}, function(error, response){
+    const CurrentCeresInformation = request({url: `${AstroidNeoWsOptions.ApiAstriodNeoWsLookup}${ApiKey}`, json: true, headers: AstroidNeoWsOptions.headers}, function(error, response){
         if(error){
             console.log("Portland... We have problem");
             console.log(error);
@@ -88,15 +117,16 @@ function GetAsteroidNeoData(ApiKey)
     });
     //===End Get A Particular Asteroid
 
-    //======================Browse all NEO Data
-    const CurrentBrowseInformation = request({url: `${AstroidNeoWsOptions.ApiAsteroidBrowse}${ApiKey}`, json: true, headers: AstroidNeoWsOptions.headers}, function(error, response){
+    //======================Browse all AstroidNeoWs Data
+    const CurrentBrowseInformation = request({url: `${AstroidNeoWsOptions.ApiAsteroidNeoWsBrowse}${ApiKey}`, json: true, headers: AstroidNeoWsOptions.headers}, function(error, response){
         if(error){
             console.log("Portland... We have problem");
             console.log(error);
         }
         else{
-            console.log("\n\n===Astroid Browse API>");
-            //Read out all Near Earth Ojects found
+            console.log("\n\n===AstroidNeoWs Browse API>");
+            //Read out all Near Earth
+            //  Ojects found
             const nNumberOfNEOs = response.body.page.size;
             console.log(`Astroids Returned from the Browse API:`);
             console.log(`   Number of Astroids: ${nNumberOfNEOs}`);
@@ -129,9 +159,9 @@ function GetAsteroidNeoData(ApiKey)
             }
         }
     });
-    //===End Browse all NEO Data
+    //===End Browse all AstroidNeoWs Data
 }
 
 module.exports = {
-    GetAsteroidNeoDataFunc: GetAsteroidNeoData
+    GetAsteroidNeoWsDataFunc: GetAsteroidNeoWsData
 }
