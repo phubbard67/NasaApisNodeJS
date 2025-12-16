@@ -63,15 +63,16 @@ function GetDONKINotifications(ApiKey)
                 console.log(error);
             }
             else{
-                console.log("\n\n====================-------------------------------------DONKI Notifcation API for the past seven days>");
+                console.log("\n\n====================------------------------------------> DONKI Notifcation API Data for the Past Seven Days>");
                 const Messages = response.body;
                 for(Message in Messages)
                 {
                     if(response.body.hasOwnProperty.call(Messages, Message)){
-                        console.log(`Message Type: ${Messages[Message].messageType}`);
-                        console.log(`Message ID: ${Messages[Message].messageID}`);
-                        console.log(`Message URL: ${Messages[Message].messageURL}`);
-                        console.log(`Message Timestamp: ${Messages[Message].messageIssueTime}\n`);
+                        console.log("!!!!DONKI NOTIFICATION FOUND!!!!")
+                        console.log(`Notification Type: ${Messages[Message].messageType}`);
+                        console.log(`Notification ID: ${Messages[Message].messageID}`);
+                        console.log(`Notification URL: ${Messages[Message].messageURL}`);
+                        console.log(`Notification Timestamp: ${Messages[Message].messageIssueTime}\n`);
                         //console.log(`Message Body: ${Messages[Message].messageBody}`);
                     }
                 }
@@ -88,14 +89,16 @@ function GetDONKICME(ApiKey)
             console.log(error);
         }
         else{
-            console.log("\n\n====================-------------------------------------DONKI Coronal Mass Ejections API for the past seven days>");
+            console.log("\n\n====================-------------------------------------> DONKI Coronal Mass Ejections API Data for the Past Seven Days>");
             const CMEData = response.body;
             for(CMEActivity in CMEData)
             {
                 if(response.body.hasOwnProperty.call(CMEData, CMEActivity)){
-                    console.log(`---CME Activity ID: ${CMEData[CMEActivity].activityID}`);
-                    console.log(`CME Submission Time ${CMEData[CMEActivity].submissionTime}`);
-                    console.log(`CME NOTE: \n    ${CMEData[CMEActivity].note}\n`)
+                    console.log("!!!CME FOUND!!!")
+                    console.log(`--- CME Activity ID: ${CMEData[CMEActivity].activityID}`);
+                    console.log(`--- CME Submission Time ${CMEData[CMEActivity].submissionTime}`);
+                    console.log(`----- CME Link: ${CMEData[CMEActivity].link}`)
+                    console.log(`- CME NOTE: \n    ${CMEData[CMEActivity].note}\n`)
                 }
             }
         }
@@ -111,11 +114,27 @@ function GetDONKIGST(ApiKey)
             }
             else{
                 const GSTData = response.body;
+                nCount = 0;
                 for(GeoMagneticStorm in GSTData){
                     if(GSTData.hasOwnProperty.call(GSTData, GeoMagneticStorm)){
-                        console.log(GSTData[GeoMagneticStorm]);
+                        console.log("\n\n====================--------------------------------> DONKI GeoMagnectic Storm API Data for the Past Seven Days>");
+                        console.log("!!!STORM FOUND!!!")
+                        console.log(`--- GeoMagnetic Storm ID: ${GSTData[GeoMagneticStorm].gstID}`);
+                        console.log(`--- GeoMagnetic Storm Start Time: ${GSTData[GeoMagneticStorm].startTime}`);
+                        console.log(`--------------- Link to Event Information: ${GSTData[GeoMagneticStorm].link}`)
+                        console.log(`\nEvents Related to the Storm by Event ID:`);
+                        const RelatedEvents = GSTData[GeoMagneticStorm].linkedEvents;
+                        for(GSTEvent in RelatedEvents)
+                        {
+                            if(RelatedEvents.hasOwnProperty.call(RelatedEvents, GSTEvent))
+                            {
+                                console.log(`---- Event ID: ${RelatedEvents[GSTEvent].activityID}`);
+                            }
+                        }
+                        nCount++;
                     }
                 }
+                console.log(`------------------------------------------- Number of GeoMagnetic Storms in the Past 7 Days: ${nCount}`);
             }
     });
 }
@@ -129,7 +148,7 @@ function GetDONKICMEAnalysis(ApiKey)
             console.log(`${error}`);
         }
         else{
-            console.log("\n\n====================------------------------------DONKI Coronal Mass Ejections Analysis API for the past seven days>");
+            console.log("\n\n====================------------------------------> DONKI Coronal Mass Ejections Analysis API Data for the Past Seven Days>");
             const CMEData = response.body;
             for(CMEActivity in CMEData)
             {
@@ -157,11 +176,12 @@ function GetDONKICMEAnalysis(ApiKey)
                 // versionId: 1,
                 // link: 
                 if(response.body.hasOwnProperty.call(CMEData, CMEActivity)){
-                    console.log(`---CME ID: ${CMEData[CMEActivity].associatedCMEID}`);
-                    console.log(`CME TIME: ${CMEData[CMEActivity].time21_5}`);
-                    console.log(`CME Note: ${CMEData[CMEActivity].note}`);
-                    console.log(`CME Link: ${CMEData[CMEActivity].associatedCMELink}`);
-                    console.log(`CME Alt Link: ${CMEData[CMEActivity].link}\n`);
+                    console.log("!!!CME ANALYSIS FOUND!!!");
+                    console.log(`----- CME ID: ${CMEData[CMEActivity].associatedCMEID}`);
+                    console.log(`--- CME TIME: ${CMEData[CMEActivity].time21_5}`);
+                    console.log(`--- CME Note: ${CMEData[CMEActivity].note}`);
+                    console.log(`--- CME Link: ${CMEData[CMEActivity].associatedCMELink}`);
+                    console.log(`--- CME Alt Link: ${CMEData[CMEActivity].link}\n`);
                 }
             }
         }

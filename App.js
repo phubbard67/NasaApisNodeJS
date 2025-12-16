@@ -15,8 +15,8 @@ const CurrentDate = new Date();
 //--------------------Main App Functionality 
 try{
     console.log("\n\n\n");
-    console.log(`====================================The Data Starts HERE==================================`)
-    console.log(`====Date: \n-------->${CurrentDate}\n\n\n`);
+    console.log(`<---------===============================---------> THE DATA STARTS HERE <---------=============================---------->`)
+    console.log(`\n====Date: \n--------> ${CurrentDate}\n\n\n`);
 
     ApiKey = "";
     try{

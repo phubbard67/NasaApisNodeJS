@@ -50,25 +50,24 @@ function GetAsteroidNeoWsData(ApiKey)
             console.log(error);
         }
         else{
-            console.log("\n\n====================-------------------------------------AstroidNeoWs Feed API>\n");
+            console.log("\n\n====================-------------------------------------> AstroidNeoWs Feed API Data for the Next Seven Days>\n");
             //Read out all Near Earth Ojects found
             const nNumberOfNEOs = response.body.element_count;
-            console.log(`Astroids That are the closest to Earth in the next 7 days:`);
-            console.log(`   Number of Asteroids in the Next 7 Days: ${nNumberOfNEOs}`);
+            console.log(`   Number of Asteroids of interest in the Next 7 Days: ${nNumberOfNEOs}`);
             const NearEarthObjects = response.body.near_earth_objects;
             for(const date in NearEarthObjects)
             {
                 if(response.body.hasOwnProperty.call(NearEarthObjects, date)){
                     const NEOs = NearEarthObjects[date];
-                    console.log(`---------------------------------------Astroids for Date: ${date}`);
+                    console.log(`--------------------------------------- Astroids for Date -> ${date}`);
                     for(const NearEarthObject in NEOs)
                     {
                         if(response.body.hasOwnProperty.call(NEOs, NearEarthObject)){
 
                             if(NEOs[NearEarthObject].is_potentially_hazardous_asteroid == true)
                             {
-                                console.log(`\n!!!!!!!!!POTENTIALLY HAZARDOUS TO EARTH!!!!!!!!!!!\n`);
-                                console.log(`-----Astroid Name: ${NEOs[NearEarthObject].name}`);
+                                console.log(`\n !!!!!!!!!!!!!!POTENTIALLY HAZARDOUS TO EARTH!!!!!!!!!!!!!!\n`);
+                                console.log(`----- Astroid Name: ${NEOs[NearEarthObject].name}`);
                                 const PotentialCloseCallDates = NEOs[NearEarthObject].close_approach_data;
                                 let dateBuff = PotentialCloseCallDates[0].close_approach_date;
                                 let approchYearBuffer = dateBuff.substring(0, 4);
@@ -82,12 +81,13 @@ function GetAsteroidNeoWsData(ApiKey)
                                     intYearBuffer = parseInt(approchYearBuffer);
                                     j++;
                                 }
-                                console.log(`-----Next Planet of Close Approach: ${PotentialCloseCallDates[j].orbiting_body}`);
-                                console.log(`-----Date of Close Approach to ${PotentialCloseCallDates[j].orbiting_body}: ${PotentialCloseCallDates[j].close_approach_date_full}\n`);
+                                console.log(`----- Next Planet of Close Approach: ${PotentialCloseCallDates[j].orbiting_body}`);
+                                console.log(`----- Time of Close Approach to ${PotentialCloseCallDates[j].orbiting_body}: ${PotentialCloseCallDates[j].close_approach_date_full}\n`);
+                                console.log(` ^^^^^^^^^^^^^^POTENTIALLY HAZARDOUS TO EARTH^^^^^^^^^^^^^^\n`);
                             }
                             else{
-                                console.log(`Astroid Name: ${NEOs[NearEarthObject].name}`);
-                                console.log(`Astroid Potentially Hazardous: ${NEOs[NearEarthObject].is_potentially_hazardous_asteroid}\n`);
+                                console.log(`----- Astroid Name: ${NEOs[NearEarthObject].name}`);
+                                console.log(`--- Astroid Potentially Hazardous: ${NEOs[NearEarthObject].is_potentially_hazardous_asteroid}\n`);
                             }
                         }
                     }
@@ -105,8 +105,8 @@ function GetAsteroidNeoWsData(ApiKey)
         }
         else{
             //Break up the data
-            console.log("\n\n====================-------------------------------------AstroidNeoWs Search API>\n");
-            console.log(`NEO API Hazard Result for Astriod: ${AsteroidPKNine}`)
+            console.log("\n\n====================-------------------------------------> AstroidNeoWs Search API Data>\n");
+            console.log(`Astriod FOUND: ${AsteroidPKNine}`)
             console.log(`Astriod Name: ${response.body.name}\nPotentially Hazardous to Earth: ${response.body.is_potentially_hazardous_asteroid}`);
         }
     });
@@ -119,7 +119,7 @@ function GetAsteroidNeoWsData(ApiKey)
             console.log(error);
         }
         else{
-            console.log("\n\n====================-------------------------------------AstroidNeoWs Browse API>\n");
+            console.log("\n\n====================-------------------------------------> AstroidNeoWs Browse API Data>\n");
             //Read out all Near Earth
             //  Ojects found
             const nNumberOfNEOs = response.body.page.size;
@@ -131,8 +131,8 @@ function GetAsteroidNeoWsData(ApiKey)
                 const isHazardous = NearEarthObjects[i].is_potentially_hazardous_asteroid;
                 if(isHazardous == true)
                 {
-                    console.log(`\n!!!!!!!!!POTENTIALLY HAZARDOUS TO EARTH!!!!!!!!!!!\n`);
-                    console.log(`-----Astroid Name: ${NearEarthObjects[i].name}`);
+                    console.log(`\n !!!!!!!!!!!!!!POTENTIALLY HAZARDOUS TO EARTH!!!!!!!!!!!!!!\n`);
+                    console.log(`----- Astroid Name: ${NearEarthObjects[i].name}`);
                     const PotentialCloseCallDates = NearEarthObjects[i].close_approach_data;
                     let dateBuff = PotentialCloseCallDates[0].close_approach_date;
                     let approchYearBuffer = dateBuff.substring(0, 4);
@@ -146,13 +146,14 @@ function GetAsteroidNeoWsData(ApiKey)
                         intYearBuffer = parseInt(approchYearBuffer);
                         j++;
                     }
-                    console.log(`-----Next Planet of Close Approach: ${PotentialCloseCallDates[j].orbiting_body}`);
-                    console.log(`-----Date of Close Approach to ${PotentialCloseCallDates[j].orbiting_body}: ${PotentialCloseCallDates[j].close_approach_date_full}\n`);
+                    console.log(`----- Next Planet of Close Approach: ${PotentialCloseCallDates[j].orbiting_body}`);
+                    console.log(`----- Date of Close Approach to ${PotentialCloseCallDates[j].orbiting_body}: ${PotentialCloseCallDates[j].close_approach_date_full}\n`);
+                    console.log(` ^^^^^^^^^^^^^^POTENTIALLY HAZARDOUS TO EARTH^^^^^^^^^^^^^^\n`);
                 }
                 else
                 {
-                    console.log(`Astroid Name: ${NearEarthObjects[i].name}`);
-                    console.log(`Potentially Hazardous to Earth: ${isHazardous}\n`);
+                    console.log(`----- Astroid Name: ${NearEarthObjects[i].name}`);
+                    console.log(`--- Potentially Hazardous to Earth: ${isHazardous}\n`);
                 }
             }
         }
