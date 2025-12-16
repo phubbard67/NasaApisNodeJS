@@ -195,6 +195,8 @@ function GetDONKIData(ApiKey)
     GetDONKICME(ApiKey);
     GetDONKICMEAnalysis(ApiKey);
     GetDONKIGST(ApiKey);
+
+    //TODO: Up next is the IPS (Interplanetary Shock API)
 }
 
 module.exports = {
