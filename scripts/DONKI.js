@@ -89,7 +89,7 @@ function GetDONKICME(ApiKey)
             console.log(error);
         }
         else{
-            console.log("\n\n====================-------------------------------------> DONKI Coronal Mass Ejections API Data for the Past Seven Days>");
+            console.log("\n\n====================-------------------------------------> DONKI Coronal Mass Ejections API Data for the Past Seven Days>\n");
             const CMEData = response.body;
             for(CMEActivity in CMEData)
             {
@@ -97,8 +97,9 @@ function GetDONKICME(ApiKey)
                     console.log("!!!CME FOUND!!!")
                     console.log(`--- CME Activity ID: ${CMEData[CMEActivity].activityID}`);
                     console.log(`--- CME Submission Time ${CMEData[CMEActivity].submissionTime}`);
-                    console.log(`----- CME Link: ${CMEData[CMEActivity].link}`)
-                    console.log(`- CME NOTE: \n    ${CMEData[CMEActivity].note}\n`)
+                    console.log(`--- CME Link: ${CMEData[CMEActivity].link}`)
+                    console.log(`\nNOTE: \n    ${CMEData[CMEActivity].note}\n`)
+                    console.log(`----------->\n`)
                 }
             }
         }
