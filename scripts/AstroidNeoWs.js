@@ -36,7 +36,7 @@ const AstroidNeoWsOptions = {
     //---AstroidNeoWs - Feed
     ApiAstroidNeoWsFeed: `https://api.nasa.gov/neo/rest/v1/feed?start_date=${AstroidStartDate}&end_date=${AstroidEndDate}&api_key=`,
     //---AstroidNeoWs - Lookup by Astroid ID
-    ApiAstriodNeoWsLookup: `https://api.nasa.gov/neo/rest/v1/neo/${AsteroidPKNine}?api_key=`,
+    ApiAstroidNeoWsLookup: `https://api.nasa.gov/neo/rest/v1/neo/${AsteroidPKNine}?api_key=`,
     //---AstroidNeoWs - Browse all NEO data
     ApiAsteroidNeoWsBrowse: `https://api.nasa.gov/neo/rest/v1/neo/browse?api_key=`
 }  
@@ -98,7 +98,7 @@ function GetAsteroidNeoWsData(ApiKey)
     //===End Astroid Feed
 
     //======================Get A particular Asteroid
-    const CurrentCeresInformation = request({url: `${AstroidNeoWsOptions.ApiAstriodNeoWsLookup}${ApiKey}`, json: true, headers: AstroidNeoWsOptions.headers}, function(error, response){
+    const CurrentCeresInformation = request({url: `${AstroidNeoWsOptions.ApiAstroidNeoWsLookup}${ApiKey}`, json: true, headers: AstroidNeoWsOptions.headers}, function(error, response){
         if(error){
             console.log("Portland... We have problem");
             console.log(error);
@@ -106,8 +106,8 @@ function GetAsteroidNeoWsData(ApiKey)
         else{
             //Break up the data
             console.log("\n\n====================-------------------------------------> AstroidNeoWs Search API Data>\n");
-            console.log(`Astriod FOUND: ${AsteroidPKNine}`)
-            console.log(`Astriod Name: ${response.body.name}\nPotentially Hazardous to Earth: ${response.body.is_potentially_hazardous_asteroid}`);
+            console.log(`Astroid FOUND: ${AsteroidPKNine}`)
+            console.log(`Astroid Name: ${response.body.name}\nPotentially Hazardous to Earth: ${response.body.is_potentially_hazardous_asteroid}`);
         }
     });
     //===End Get A Particular Asteroid
