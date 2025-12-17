@@ -88,7 +88,7 @@ try{
 //         const option = {
 //             root: path.join(__dirname)
 //         }
-//         app.use(express.static('public'));
+//         app.use(express.static('public')); //Let the server know to use static pages, like images
 
 //         res.sendFile('./pages/index.html', option, (error) => {
 //             if(error){
