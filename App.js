@@ -95,10 +95,9 @@ try{
 //                 common.ErrorPrintFunc(error);
 //             }
 //             else{
-//                 console.log("YOU DID IT!!")
+//                 console.log("index.html has been served!")
 //             }
 //         });
-//         console.log("file sent")
 //     });
 
 //     app.listen(3000, (error) => {
@@ -107,7 +106,7 @@ try{
 //             common.ErrorPrintFunc(error);
 //         }
 //         else{
-//             console.log("The server is live at /http://localhost/3000/");
+//             console.log("The server is live at http://localhost:3000/");
 //         }
 //     });
 
