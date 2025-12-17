@@ -80,7 +80,7 @@ try{
     console.log(error); 
 }
 
-///TODO: Started working on a GUI using HTML and a localhost express server
+///TODO: Started working on a GUI using HTML and a localhost express server.
 //        Just uncomment and go to http://localhost:3000/ in any browser from the 
 //        computer you are running the server / code on to see the page progress. 
 // try{
