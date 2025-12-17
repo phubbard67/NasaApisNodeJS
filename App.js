@@ -2,6 +2,10 @@
 
 // Copyright (c) 2025 Paul Elliott Hubbard
 
+const express = require('express');
+const app = express();
+const path = require('path')
+port = 3000;
 
 //----------------------------------------------Global Vars
 const request = require('request');
@@ -75,3 +79,40 @@ try{
     console.log("Portland... We REALLY have a problem here.\n");
     console.log(error); 
 }
+
+///TODO: Started working on a GUI using HTML and a localhost express server
+//        Just uncomment and go to http://localhost:3000/ in any browser from the 
+//        computer you are running the server / code on to see the page progress. 
+// try{
+//     app.get('/', (req, res) => {
+//         const option = {
+//             root: path.join(__dirname)
+//         }
+//         app.use(express.static('public'));
+
+//         res.sendFile('./pages/index.html', option, (error) => {
+//             if(error){
+//                 common.ErrorPrintFunc(error);
+//             }
+//             else{
+//                 console.log("YOU DID IT!!")
+//             }
+//         });
+//         console.log("file sent")
+//     });
+
+//     app.listen(3000, (error) => {
+//         if(error)
+//         {
+//             common.ErrorPrintFunc(error);
+//         }
+//         else{
+//             console.log("The server is live at /http://localhost/3000/.");
+//         }
+//     });
+
+// }catch(error){
+//     common.ErrorPrintFunc(error);
+// }
+
+

@@ -46,8 +46,7 @@ function GetAsteroidNeoWsData(ApiKey)
     //======================Get the Asteriod Feed Information
     const CurrentAsteriodFeed = request({url: `${AstroidNeoWsOptions.ApiAstroidNeoWsFeed}${ApiKey}`, json: true}, function(error, response){
         if(error){
-            console.log("Portland... We have problem");
-            console.log(error);
+            common.ErrorPrintFunc(error);
         }
         else{
             console.log("\n\n====================-------------------------------------> AstroidNeoWs Feed API Data for the Next Seven Days>\n");
@@ -100,8 +99,7 @@ function GetAsteroidNeoWsData(ApiKey)
     //======================Get A particular Asteroid
     const CurrentCeresInformation = request({url: `${AstroidNeoWsOptions.ApiAstroidNeoWsLookup}${ApiKey}`, json: true, headers: AstroidNeoWsOptions.headers}, function(error, response){
         if(error){
-            console.log("Portland... We have problem");
-            console.log(error);
+            common.ErrorPrintFunc(error);
         }
         else{
             //Break up the data
@@ -115,8 +113,7 @@ function GetAsteroidNeoWsData(ApiKey)
     //======================Browse all AstroidNeoWs Data
     const CurrentBrowseInformation = request({url: `${AstroidNeoWsOptions.ApiAsteroidNeoWsBrowse}${ApiKey}`, json: true, headers: AstroidNeoWsOptions.headers}, function(error, response){
         if(error){
-            console.log("Portland... We have problem");
-            console.log(error);
+            common.ErrorPrintFunc(error);
         }
         else{
             console.log("\n\n====================-------------------------------------> AstroidNeoWs Browse API Data>\n");

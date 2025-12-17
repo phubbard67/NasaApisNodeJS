@@ -15,6 +15,12 @@ function GetTwoDigitString(nNumberToConver)
     }
 }
 
+function ErrorPrint(error){
+    console.log("\n         !!!!!!!!---------???? Portland... We have problem ????--------!!!!!!!!\n");
+    console.log(error);
+}
+
 module.exports = {
-    GetTwoDigitStringFunc: GetTwoDigitString
+    GetTwoDigitStringFunc: GetTwoDigitString,
+    ErrorPrintFunc: ErrorPrint
 }

@@ -59,8 +59,7 @@ function GetDONKINotifications(ApiKey)
 {
     request({url: `${DONKIOptions.ApiDONKINotifications}${ApiKey}`, json: true}, function(error, response){
             if(error){
-                console.log("Portland... We have problem");
-                console.log(error);
+                common.ErrorPrintFunc(error);
             }
             else{
                 console.log("\n\n====================------------------------------------> DONKI Notifcation API Data for the Past Seven Days>");
@@ -68,12 +67,12 @@ function GetDONKINotifications(ApiKey)
                 for(Message in Messages)
                 {
                     if(response.body.hasOwnProperty.call(Messages, Message)){
-                        console.log("!!!!DONKI NOTIFICATION FOUND!!!!")
-                        console.log(`Notification Type: ${Messages[Message].messageType}`);
-                        console.log(`Notification ID: ${Messages[Message].messageID}`);
-                        console.log(`Notification URL: ${Messages[Message].messageURL}`);
-                        console.log(`Notification Timestamp: ${Messages[Message].messageIssueTime}\n`);
-                        //console.log(`Message Body: ${Messages[Message].messageBody}`);
+                        console.log("!!!!!!!!!!!!!!!!!!!!!!!!!----->>>>>>>>>>>>>>> DONKI NOTIFICATION FOUND <<<<<<<<<<<<<<<-----!!!!!!!!!!!!!!!!!!!!!!!!!")
+                        console.log(`\n------------------> Notification Type: ${Messages[Message].messageType}`);
+                        console.log(`\n------------------> Notification ID: ${Messages[Message].messageID}`);
+                        console.log(`\n------------------> Notification URL: ${Messages[Message].messageURL}`);
+                        console.log(`\n------------------> Notification Timestamp: ${Messages[Message].messageIssueTime}\n`);
+                        console.log(`--> Notification:\n${Messages[Message].messageBody}`);
                     }
                 }
             }
@@ -85,8 +84,7 @@ function GetDONKICME(ApiKey)
     request({url: `${DONKIOptions.ApiDONKICME}${ApiKey}`, json: true}, function(error, response){
         if(error)
         {
-            console.log("Portland... We have a problem");
-            console.log(error);
+            common.ErrorPrintFunc(error);
         }
         else{
             console.log("\n\n====================-------------------------------------> DONKI Coronal Mass Ejections API Data for the Past Seven Days>\n");
@@ -110,8 +108,7 @@ function GetDONKIGST(ApiKey)
 {
     request({url: `${DONKIOptions.ApiDONKIGST}${ApiKey}`, json: true}, function(error, response){
             if(error){
-                console.log("Portland... We have a problem");
-                console.log(error);
+                common.ErrorPrintFunc(error);
             }
             else{
                 const GSTData = response.body;
@@ -145,8 +142,7 @@ function GetDONKICMEAnalysis(ApiKey)
     request({url: `${DONKIOptions.ApiDONKILookup}${ApiKey}`, json: true}, function(error, response){
         if(error)
         {
-            console.log("Portland... We have a problem");
-            console.log(`${error}`);
+            common.ErrorPrintFunc(error);
         }
         else{
             console.log("\n\n====================------------------------------> DONKI Coronal Mass Ejections Analysis API Data for the Past Seven Days>");
