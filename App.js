@@ -61,19 +61,20 @@ try{
     ApiKey = "";
     try{
         //Get the API File data:
-        // NOTE: If you want to create your own .ini file, just 
-        //        create it and call it something like 'my_api_keys.ini' and place it 
+        // NOTE: 
+        //  If you want to create your own .ini file:
+        //      First, create the file and call it something like 'my_api_keys.ini' and place it 
         //        one folder location up from the App.js file (../my_api_keys.ini)
-        // Then put the following code inside the my_api_keys.ini file to work with this API
-        //        after creating your own API key at https://api.nasa.gov. Otherwise, you can remove the 
-        //        ini file code and copy your api key directly into the ApiKey var. 
-        //Contents of the file my_api_keys.ini:
-        //[NASA_API]
-        //API_KEY='yourApiKeyGoesBetweenTheseQuotes'
-        //----------Comment out or remove if not Using INI file and replace ApiKey with your key value.
+        //      Then, obtain an API key at https://api.nasa.gov
+        //      Next, put the following code inside the my_api_keys.ini file to work with this API
+        //          [NASA_API]
+        //          API_KEY='yourApiKeyGoesBetweenTheseQuotes'
+        //      IF you do not wish to make an INI file, you can remove the 
+        //          ini file code and copy your api key directly into the ApiKey var 
+        //          by replacing ApiDatabase.NASA_API.API_KEY with the API key string. 
+
         const config = fs.readFileSync("../my_api_keys.ini", "utf-8");
         const ApiDatabase = ini.parse(config)
-        //---End Comment our or remove...
     
         ApiKey = ApiDatabase.NASA_API.API_KEY;
         console.log(`API KEY FOUND: ${ApiKey}`);
@@ -110,7 +111,7 @@ try{
     //      information stored in DONKI."
     DONKI.GetDONKIDataFunc(ApiKey);
 
-    ///TODO: Started working on a GUI using HTML and a localhost express server.
+    ///TODO: Started working on a GUI using HTML, CSS and W3Schools, and I created a localhost express server.
     //        Just uncomment and go to http://localhost:3000/ in any browser from the 
     //        computer you are running the server / code on to see the page progress. 
     //OpenSesMe(strIndexHtml);
