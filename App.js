@@ -95,7 +95,7 @@ try{
     //     lookup a specific Asteroid with its NASA JPL small body id, as well as browse the overall data-set.
     //     Data-set: All the data is from the NASA JPL Asteroid team (http://neo.jpl.nasa.gov/).
     //     This API is maintained by SpaceRocks Team: David Greenfield, Arezu Sarvestani, Jason English and Peter Baunach."
-    //AstroidNeoWs.GetAsteroidNeoWsDataFunc(ApiKey);
+    AstroidNeoWs.GetAsteroidNeoWsDataFunc(ApiKey);
 
     //DONKI-----
     // FROM api.nasa.gov
@@ -108,7 +108,7 @@ try{
     //      to support anomaly resolution and space science research, intelligent linkages, relationships, 
     //      cause-and-effects between space weather activities and comprehensive webservice API access to 
     //      information stored in DONKI."
-    //DONKI.GetDONKIDataFunc(ApiKey);
+    DONKI.GetDONKIDataFunc(ApiKey);
 
     ///TODO: Started working on a GUI using HTML and a localhost express server.
     //        Just uncomment and go to http://localhost:3000/ in any browser from the 
