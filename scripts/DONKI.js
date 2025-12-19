@@ -15,6 +15,8 @@ const CurrentDate = new Date();
 //Neo Feed Vars
 const DateSevenDaysAgo = new Date();
 DateSevenDaysAgo.setDate(CurrentDate.getDate() - 7);
+const DateAboutOneYearAgo = new Date();
+DateAboutOneYearAgo.setDate(CurrentDate.getDate() - 365);
 
 nDay = CurrentDate.getDate();
 strDay = common.GetTwoDigitStringFunc(nDay);
@@ -28,6 +30,8 @@ strMonthSevenDaysAgo = common.GetTwoDigitStringFunc(nMonthSevenDaysAgo);
 
 const DONKIEndDate = `${CurrentDate.getFullYear()}-${strMonth}-${strDay}`;
 const DONKIStartDate = `${DateSevenDaysAgo.getFullYear()}-${strMonthSevenDaysAgo}-${strSevenDays}`;
+const DONKIIPSStartDate = `${DateAboutOneYearAgo.getFullYear()}-${common.GetTwoDigitStringFunc(DateAboutOneYearAgo.getMonth())}-${common.GetTwoDigitStringFunc(DateAboutOneYearAgo.getDay())}`
+const DONKIIPSEndDate = DONKIStartDate;
 
 const DONKIOptions = {
     //-------------------------------------------------DONKI
@@ -38,7 +42,7 @@ const DONKIOptions = {
     //---DONKI - GeoMagnetic Storms (GST) for the past 7 days
     ApiDONKIGST: `https://api.nasa.gov/DONKI/GST?startDate=${DONKIStartDate}&endDate=${DONKIEndDate}&api_key=`,
     //---DONKI - Interplanetary Shock (IPS) for the past 7 days
-    ApiDONKIIPS: `https://api.nasa.gov/DONKI/IPS?startDate=${DONKIStartDate}&endDate=${DONKIEndDate}&location=LOCATION&catalog=CATALOG&api_key=`,
+    ApiDONKIIPS: `https://api.nasa.gov/DONKI/IPS?startDate=${DONKIIPSStartDate}&endDate=${DONKIIPSEndDate}&api_key=`,
     //---DONKI - Solar Flare (FLR) for the past 7 days
     ApiDONKIFLR: `https://api.nasa.gov/DONKI/FLR?startDate=${DONKIStartDate}&endDate=${DONKIEndDate}&api_key=`,
     //---DONKI - Solar Energetic Particles (SEP) for the past 7 days
@@ -185,6 +189,45 @@ function GetDONKICMEAnalysis(ApiKey)
     });
 }
 
+function GetIPSData(ApiKey)
+{
+    //---IPS Data Return entry example
+    // catalog: 'M2M_CATALOG',
+    // activityID: '2025-10-11T08:42:00-IPS-001',
+    // location: 'Earth',
+    // eventTime: '2025-10-11T08:42Z',
+    // submissionTime: '2025-10-14T18:13Z',
+    // versionId: 2,
+    // link: 'https://webtools.ccmc.gsfc.nasa.gov/DONKI/view/IPS/41701/-1',
+    // instruments: [ [Object], [Object] ],
+    // linkedEvents: [ [Object] ],
+    // sentNotifications: null
+    request({url: `${DONKIOptions.ApiDONKIIPS}${ApiKey}`, json: true}, (error, response) => {
+        if(error)
+        {
+            common.ErrorPrintFunc(error);
+        }
+        else{
+            IPSBody = response.body;
+            
+            //Print that data! 
+            console.log("\n\n====================------------------------------> DONKI Interplanetary Shock (IPS) API Data for the Past 365 Days>");
+            
+            for(IPSEntry in IPSBody)
+            {
+                if(IPSBody.hasOwnProperty.call(IPSBody, IPSEntry)){
+                    console.log(`----- Interplanetary Shock ID: ${IPSBody[IPSEntry].activityID}`);
+                    console.log(`--- Interplanetary Shock Catalog: ${IPSBody[IPSEntry].catalog}`);
+                    console.log(`--- Interplanetary Shock Location: ${IPSBody[IPSEntry].location}`);
+                    console.log(`--- Interplanetary Shock Event Time: ${IPSBody[IPSEntry].eventTime}`);
+                    console.log(`--- Interplanetary Shock Time Submitted: ${IPSBody[IPSEntry].submissionTime}`);
+                    console.log(`---------------------------------------- Interplanetary Shock Link: ${IPSBody[IPSEntry].link}\n`);
+                }
+            }
+        }
+    });
+}
+
 
 function GetDONKIData(ApiKey)
 {
@@ -192,8 +235,8 @@ function GetDONKIData(ApiKey)
     GetDONKICME(ApiKey);
     GetDONKICMEAnalysis(ApiKey);
     GetDONKIGST(ApiKey);
-
-    //TODO: Up next is the IPS (Interplanetary Shock API)
+//TODO: Up next is the IPS (Interplanetary Shock API)
+    GetIPSData(ApiKey);
 }
 
 module.exports = {

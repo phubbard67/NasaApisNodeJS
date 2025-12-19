@@ -48,13 +48,13 @@ const request = require('request');
 const fs = require('fs');
 const ini = require('ini');
 const common = require('./scripts/commonModule');
-const AstroidNeoWs = require('./scripts/AstroidNeoWs');
+const AsteroidNeoWs = require('./scripts/AsteroidNeoWs');
 const DONKI = require('./scripts/DONKI');
 const CurrentDate = new Date();
  
 //--------------------Main App Functionality 
 try{
-    console.log("\n\n\n");
+    console.log("\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
     console.log(`<---------===============================---------> THE DATA STARTS HERE <---------=============================---------->`)
     console.log(`\n====Date: \n--------> ${CurrentDate}\n\n\n`);
 
@@ -96,7 +96,7 @@ try{
     //     lookup a specific Asteroid with its NASA JPL small body id, as well as browse the overall data-set.
     //     Data-set: All the data is from the NASA JPL Asteroid team (http://neo.jpl.nasa.gov/).
     //     This API is maintained by SpaceRocks Team: David Greenfield, Arezu Sarvestani, Jason English and Peter Baunach."
-    AstroidNeoWs.GetAsteroidNeoWsDataFunc(ApiKey);
+    AsteroidNeoWs.GetAsteroidNeoWsDataFunc(ApiKey);
 
     //DONKI-----
     // FROM api.nasa.gov
