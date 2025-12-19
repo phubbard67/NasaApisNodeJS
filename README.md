@@ -1,5 +1,5 @@
 # Nasa APIs NodeJS
-This is an application to test out and use all of the NASA API Data freely available to the public. 
+This is an application to test out and use all of the NASA API Data that they provide freely to the public (Thanks, NASA!). 
 
 ## Technologies Used
 The project was built as a [Node JS](https://nodejs.org) application that uses information from [NASA APIs](https://api.nasa.gov/). I used some open source designs from [W3Schools](https://www.w3schools.com/). I also used basic HTML and CSS for the front end. 
