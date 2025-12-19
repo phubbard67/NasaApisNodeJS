@@ -4,7 +4,7 @@ This NodeJS App was made to test out and use the [APIs that NASA has to offer](h
 ## Technologies Used
 The project uses information from [NASA](https://api.nasa.gov/). 
 ### Apis Implemented So Far...
-- [All of The AstroidNeoWs APIs](https://api.nasa.gov/#browseAPI)
+- [All of The AsteroidNeoWs APIs](https://api.nasa.gov/#browseAPI)
 - [The Notifications, Cornonal Mass Ejections (CME) and GeoMagnetic Storm APIs for DONKI](https://api.nasa.gov/#browseAPI)
 
 ## Build
