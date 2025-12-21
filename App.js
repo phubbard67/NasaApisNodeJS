@@ -154,7 +154,7 @@ try{
     ///TODO: Started working on a GUI using HTML, CSS and W3Schools, and I created a localhost express server.
     //        Just uncomment and go to http://localhost:3000/ in any browser from the 
     //        computer you are running the server / code on to see the page progress. 
-    //OpenSesMe(strIndexHtml);
+    //OpenSesMe();
 
 
 }catch(error){
