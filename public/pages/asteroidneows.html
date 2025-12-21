@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>NASA API APP</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/5/w3.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inconsolata">
+<link rel="stylesheet" href="../css/main.css">
+</head>
+<body>
+
+<!-- Links (sit on top) -->
+<div class="w3-top">
+  <div class="w3-row w3-padding w3-black">
+    <div class="w3-col s3">
+      <a href="/" class="w3-button w3-block w3-black">Home</a>
+    </div>
+    <div class="w3-col s3">
+      <a href="asteroidneows.html" class="w3-button w3-block w3-black">AsteroidNeoWs API</a>
+    </div>
+    <div class="w3-col s3">
+      <a href="donki.html" class="w3-button w3-block w3-black">DONKI Space Weather</a>
+    </div>
+  </div>
+</div>
+
+<!-- Header with image -->
+<header class="bgimg w3-display-container w3-grayscale-min" id="home">
+  <div class="w3-display-bottomleft w3-center w3-padding-large w3-hide-small">
+    <span class="w3-tag">Created by Paul Hubbard</span>
+  </div>
+  <div class="w3-display-middle w3-center">
+    <span class="w3-text-white" style="font-size:90px">AsteroidNeoWs<br>API</span>
+  </div>
+</header>
+
+<!-- Add a background color and large text to the whole page -->
+<div class="w3-sand w3-grayscale w3-large">
+
+<!-- About Container -->
+<div class="w3-container" id="about">
+  <div class="w3-content" style="max-width:700px">
+    <h5 class="w3-center w3-padding-64"><span class="w3-tag w3-wide">ABOUT</span></h5>
+    
+    <p>This NodeJS App was made to test out and use the <a href='https://api.nasa.gov/'>APIs that NASA has to offer</a></p>
+    
+    <h6 class="w3-center w3-padding-64"><span class="w3-tag w3-wide">Technologies Used</span></h6>
+    <p>The project uses information from <a href="https://api.nasa.gov/">NASA</a>.</p>
+    <p>Apis Implemented So Far...</p>
+    <p>- <a href="https://api.nasa.gov/#browseAPI">All of The AstroidNeoWs APIs</a></p>
+    <p>- <a href="https://api.nasa.gov/#browseAPI">The Notifications, Cornonal Mass Ejections (CME) and GeoMagnetic Storm APIs for DONKI</a></p>
+    <div class="w3-panel w3-leftbar w3-light-grey">
+      <h6 class="w3-center w3-padding-64"><span class="w3-tag w3-wide">License</span>
+      <p>LICENSE: <a href="https://github.com/phubbard67/NasaApisNodeJS/blob/master/LICENSE">MIT OpenSource License</a></p>
+      <p>CREATOR: <a href="https://github.com/phubbard67/NasaApisNodeJS/">Paul Hubbard</a></p>
+    </div>
+    <img src="/images/WebbImageRedSpiderNebula.jpg" style="width:100%;max-width:1000px" class="w3-margin-top">
+    <p><strong>Lorum:</strong> Ipsum</p>
+    <p><strong>Lorum:</strong> Ipsum</p>
+  </div>
+</div>
+
+<!-- Menu Container -->
+<div class="w3-container" id="menu">
+  <div class="w3-content" style="max-width:700px">
+ 
+    <h5 class="w3-center w3-padding-48"><span class="w3-tag w3-wide">LORUM</span></h5>
+  
+    <div class="w3-row w3-center w3-card w3-padding">
+      <a href="javascript:void(0)" onclick="openMenu(event, 'Lorum');" id="myLink">
+        <div class="w3-col s6 tablink">Lorum</div>
+      </a>
+      <a href="javascript:void(0)" onclick="openMenu(event, 'Ipsum');">
+        <div class="w3-col s6 tablink">Ipsum</div>
+      </a>
+    </div>
+
+    <div id="Lorum" class="w3-container menu w3-padding-48 w3-card">
+      <h5>Lorum Ipsum</h5>
+      <p class="w3-text-grey">Lorum ipsum</p><br>
+    
+      <h5>Lorum Ipsum</h5>
+      <p class="w3-text-grey">Lorem ipsum dolor sit amet, consectetur adipiscing elit</p><br>
+    
+      <h5>Lorum Ipsum</h5>
+      <p class="w3-text-grey">Lorem ipsum dolor sit amet, consectetur adipiscing elit</p><br>
+    
+      <h5>Lorum Ipsum</h5>
+      <p class="w3-text-grey">Lorem ipsum dolor sit amet, consectetur adipiscing elit</p><br>
+    
+      <h5>Lorum Ipsum</h5>
+      <p class="w3-text-grey">Lorem ipsum dolor sit amet, consectetur adipiscing elit</p>
+    </div>
+
+    <div id="Ipsum" class="w3-container menu w3-padding-48 w3-card">
+      <h5>Lorem</h5>
+      <p class="w3-text-grey">Lorem ipsum dolor sit amet</p><br>
+    
+      <h5>Ipsue</h5>
+      <p class="w3-text-grey">Lorem ipsum dolor sit amet</p><br>
+    
+      <h5>Lorest</h5>
+      <p class="w3-text-grey">Lorem ipsum dolor sit amet</p><br>
+    
+      <h5>Mancho</h5>
+      <p class="w3-text-grey">Lorem ipsum dolor sit amet</p><br>
+    
+      <h5>Hucnsh</h5>
+      <p class="w3-text-grey">Lorem ipsum dolor sit amet</p>
+    </div>  
+    <img src="/images/WebbImageRedSpiderNebula.jpg" style="width:100%;max-width:1000px;margin-top:32px;">
+  </div>
+</div>
+
+<!-- End page content -->
+</div>
+
+<!-- Footer -->
+<footer class="w3-center w3-light-grey w3-padding-48 w3-large">
+  <p>&copy Paul Hubbard 2025</p>
+</footer>
+
+<script>
+// Tabbed Menu
+function openMenu(evt, menuName) {
+  var i, x, tablinks;
+  x = document.getElementsByClassName("menu");
+  for (i = 0; i < x.length; i++) {
+    x[i].style.display = "none";
+  }
+  tablinks = document.getElementsByClassName("tablink");
+  for (i = 0; i < x.length; i++) {
+    tablinks[i].className = tablinks[i].className.replace(" w3-dark-grey", "");
+  }
+  document.getElementById(menuName).style.display = "block";
+  evt.currentTarget.firstElementChild.className += " w3-dark-grey";
+}
+document.getElementById("myLink").click();
+</script>
+
+</body>
+</html>

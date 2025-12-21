@@ -6,10 +6,12 @@ const express = require('express');
 const app = express();
 const path = require('path');
 const PORT = 3000;
-const strIndexHtml = "/pages/index.html";
+const strIndexHtml = "/public/pages/index.html";
+const strAsteroidNeoWsHtml = "/public/pages/asteroidneows.html";
+const strDonkiHtml = "/public/pages/donki.html";
 
 //Serve an HTML page
-const OpenSesMe = (HtmlPage) => {
+const OpenSesMe = () => {
     try{
         app.get('/', (req, res) => {
             const option = {
@@ -18,20 +20,56 @@ const OpenSesMe = (HtmlPage) => {
             
             app.use(express.static('public')); //Let the server know to use static pages, like images and .css files.
 
-            res.sendFile(HtmlPage, option, (error) => {
+            res.sendFile(strIndexHtml, option, (error) => {
                 if(error)
                 {
-                    ErrorPrint(error);
+                    common.ErrorPrintFunc(error);
                 }
                 else{
-                    console.log(`${HtmlPage} is served to http://localhost:${PORT}`);
+                    console.log(`${strIndexHtml} is served to http://localhost:${PORT}`);
+                }
+            });
+        });
+
+        app.get('/asteroidneows.html', (req, res) => {
+            const option = {
+                root : path.join(__dirname)
+            }
+            
+            app.use(express.static('public')); //Let the server know to use static pages, like images and .css files.
+
+            res.sendFile(strAsteroidNeoWsHtml, option, (error) => {
+                if(error)
+                {
+                    common.ErrorPrintFunc(error);
+                }
+                else{
+                    console.log(`${strAsteroidNeoWsHtml} is served to http://localhost:${PORT}`);
+                }
+            });
+        });
+
+        app.get('/donki.html', (req, res) => {
+            const option = {
+                root : path.join(__dirname)
+            }
+
+            app.use(express.static('public'));
+
+            res.sendFile(strDonkiHtml, option, (error) => {
+                if(error)
+                {
+                    common.ErrorPrintFunc(error);
+                }
+                else{
+                    console.log(`${strDonkiHtml} is served to http://localhost:${PORT}`);
                 }
             });
         });
 
         app.listen(PORT, (error) => {
             if(error){
-                ErrorPrint(error);
+                common.ErrorPrintFunc(error);
             }
             else{
                 console.log(`The App is now live at http://localhost:${PORT}`);
@@ -55,6 +93,7 @@ const CurrentDate = new Date();
 //--------------------Main App Functionality 
 try{
     console.log("\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
+    console.clear();
     console.log(`<---------===============================---------> THE DATA STARTS HERE <---------=============================---------->`)
     console.log(`\n====Date: \n--------> ${CurrentDate}\n\n\n`);
 
@@ -71,7 +110,8 @@ try{
         //          API_KEY='yourApiKeyGoesBetweenTheseQuotes'
         //      IF you do not wish to make an INI file, you can remove the 
         //          ini file code and copy your api key directly into the ApiKey var 
-        //          by replacing ApiDatabase.NASA_API.API_KEY with the API key string. 
+        //          by replacing ApiDatabase.NASA_API.API_KEY with the API key string in between 
+        //          quotes. Example ApiKey = 'yourApiKeyGoesBetweenTheseQuotes'. 
 
         const config = fs.readFileSync("../my_api_keys.ini", "utf-8");
         const ApiDatabase = ini.parse(config)
@@ -96,7 +136,7 @@ try{
     //     lookup a specific Asteroid with its NASA JPL small body id, as well as browse the overall data-set.
     //     Data-set: All the data is from the NASA JPL Asteroid team (http://neo.jpl.nasa.gov/).
     //     This API is maintained by SpaceRocks Team: David Greenfield, Arezu Sarvestani, Jason English and Peter Baunach."
-    AsteroidNeoWs.GetAsteroidNeoWsDataFunc(ApiKey);
+    //AsteroidNeoWs.GetAsteroidNeoWsDataFunc(ApiKey);
 
     //DONKI-----
     // FROM api.nasa.gov
@@ -109,12 +149,12 @@ try{
     //      to support anomaly resolution and space science research, intelligent linkages, relationships, 
     //      cause-and-effects between space weather activities and comprehensive webservice API access to 
     //      information stored in DONKI."
-    DONKI.GetDONKIDataFunc(ApiKey);
+    //DONKI.GetDONKIDataFunc(ApiKey);
 
     ///TODO: Started working on a GUI using HTML, CSS and W3Schools, and I created a localhost express server.
     //        Just uncomment and go to http://localhost:3000/ in any browser from the 
     //        computer you are running the server / code on to see the page progress. 
-    //OpenSesMe(strIndexHtml);
+    OpenSesMe(strIndexHtml);
 
 
 }catch(error){
