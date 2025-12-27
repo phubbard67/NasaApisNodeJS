@@ -10,7 +10,7 @@ const strIndexHtml = "/public/pages/index.html";
 const strAsteroidNeoWsHtml = "/public/pages/asteroidneows.html";
 const strDonkiHtml = "/public/pages/donki.html";
 
-//Start the server
+//------------------------Start the server
 const OpenSesMe = () => {
     try{
         app.get('/', (req, res) => {
@@ -92,8 +92,8 @@ const CurrentDate = new Date();
  
 //--------------------Main App Functionality 
 try{
-    console.log("\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
     console.clear();
+    console.log("\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
     console.log(`<---------===============================---------> THE DATA STARTS HERE <---------=============================---------->`)
     console.log(`\n====Date: \n--------> ${CurrentDate}\n\n\n`);
 

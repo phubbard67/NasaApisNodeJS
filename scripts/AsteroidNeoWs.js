@@ -68,21 +68,24 @@ function GetAsteroidNeoWsData(ApiKey)
                                 console.log(`\n !!!!!!!!!!!!!!POTENTIALLY HAZARDOUS TO EARTH!!!!!!!!!!!!!!\n`);
                                 console.log(`----- Asteroid Name: ${NEOs[NearEarthObject].name}`);
                                 const PotentialCloseCallDates = NEOs[NearEarthObject].close_approach_data;
-                                let dateBuff = PotentialCloseCallDates[0].close_approach_date;
-                                let approchYearBuffer = dateBuff.substring(0, 4);
-                                let intYearBuffer = parseInt(approchYearBuffer);
-
-                                j = 0;
-                                while(intYearBuffer < CurrentDate.getFullYear())
+                                if(PotentialCloseCallDates.length > 0)
                                 {
-                                    dateBuff = PotentialCloseCallDates[j].close_approach_date;
-                                    approchYearBuffer = dateBuff.substring(0, 4);
-                                    intYearBuffer = parseInt(approchYearBuffer);
-                                    j++;
+                                    let dateBuff = PotentialCloseCallDates[0].close_approach_date;
+                                    let approchYearBuffer = dateBuff.substring(0, 4);
+                                    let intYearBuffer = parseInt(approchYearBuffer);
+
+                                    j = 0;
+                                    while(intYearBuffer < CurrentDate.getFullYear())
+                                    {
+                                        dateBuff = PotentialCloseCallDates[j].close_approach_date;
+                                        approchYearBuffer = dateBuff.substring(0, 4);
+                                        intYearBuffer = parseInt(approchYearBuffer);
+                                        j++;
+                                    }
+                                    console.log(`----- Next Planet of Close Approach: ${PotentialCloseCallDates[j].orbiting_body}`);
+                                    console.log(`----- Time of Close Approach to ${PotentialCloseCallDates[j].orbiting_body}: ${PotentialCloseCallDates[j].close_approach_date_full}\n`);
+                                    console.log(` ^^^^^^^^^^^^^^POTENTIALLY HAZARDOUS TO EARTH^^^^^^^^^^^^^^\n`);
                                 }
-                                console.log(`----- Next Planet of Close Approach: ${PotentialCloseCallDates[j].orbiting_body}`);
-                                console.log(`----- Time of Close Approach to ${PotentialCloseCallDates[j].orbiting_body}: ${PotentialCloseCallDates[j].close_approach_date_full}\n`);
-                                console.log(` ^^^^^^^^^^^^^^POTENTIALLY HAZARDOUS TO EARTH^^^^^^^^^^^^^^\n`);
                             }
                             else{
                                 console.log(`----- Asteroid Name: ${NEOs[NearEarthObject].name}`);
