@@ -7,7 +7,7 @@ The project was built as a [Node JS](https://nodejs.org) application that uses i
 
 ### Apis Implemented So Far...
 - [All of The AsteroidNeoWs APIs](https://api.nasa.gov/#browseAPI)
-- [The Notifications, Cornonal Mass Ejections (CME), GeoMagnetic Storm (GMS) and the Interplanetary Shock (IPS) APIs for DONKI](https://api.nasa.gov/#browseAPI)
+- [The Notifications, Cornonal Mass Ejections (CME), GeoMagnetic Storm (GMS), the Interplanetary Shock (IPS) and the Solar Flare (FLR) APIs for DONKI](https://api.nasa.gov/#browseAPI)
 
 I have also started a basic front end with HTML, CSS, Javascript and [W3Schools](https://)
 

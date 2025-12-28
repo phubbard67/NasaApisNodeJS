@@ -10,30 +10,35 @@
 const request = require('request');
 const common = require('./commonModule');
 const CurrentDate = new Date();
-
-//---Astroid NeoWs Vars
-//Neo Feed Vars
-const DateSevenDaysAgo = new Date();
-DateSevenDaysAgo.setDate(CurrentDate.getDate() - 7);
-const DateAboutOneYearAgo = new Date();
-DateAboutOneYearAgo.setDate(CurrentDate.getDate() - 365);
-
 nDay = CurrentDate.getDate();
 strDay = common.GetTwoDigitStringFunc(nDay);
 nMonth = CurrentDate.getMonth() + 1;
 strMonth = common.GetTwoDigitStringFunc(nMonth);
 
+//--------------------------------------DONKI Vars
+const DateSevenDaysAgo = new Date();
+DateSevenDaysAgo.setDate(CurrentDate.getDate() - 7);
 nSevenDays = DateSevenDaysAgo.getDate();
 strSevenDays = common.GetTwoDigitStringFunc(nSevenDays);
 nMonthSevenDaysAgo = DateSevenDaysAgo.getMonth() + 1;
 strMonthSevenDaysAgo = common.GetTwoDigitStringFunc(nMonthSevenDaysAgo);
-
 const DONKIEndDate = `${CurrentDate.getFullYear()}-${strMonth}-${strDay}`;
 const DONKIStartDate = `${DateSevenDaysAgo.getFullYear()}-${strMonthSevenDaysAgo}-${strSevenDays}`;
-const DONKIIPSStartDate = `${DateAboutOneYearAgo.getFullYear()}-${common.GetTwoDigitStringFunc(DateAboutOneYearAgo.getMonth())}-${common.GetTwoDigitStringFunc(DateAboutOneYearAgo.getDay())}`
-const DONKIIPSEndDate = DONKIStartDate;
 
-const DONKIOptions = {
+//-------InterPlanetary Shock Specific Vars
+const DateAboutOneYearAgo = new Date();
+DateAboutOneYearAgo.setDate(CurrentDate.getDate() - 365);
+const DONKIIPSStartDate = `${DateAboutOneYearAgo.getFullYear()}-${common.GetTwoDigitStringFunc(DateAboutOneYearAgo.getMonth() + 1)}-${common.GetTwoDigitStringFunc(DateAboutOneYearAgo.getDate())}`
+const DONKIIPSEndDate = `${CurrentDate.getFullYear()}-${strMonth}-${strDay}`;
+
+//------Solar Flare Specific Vars
+const DateThirtyDaysAgo = new Date();
+DateThirtyDaysAgo.setDate(CurrentDate.getDate() - 30);
+const DONKIFLRStartDate = `${DateThirtyDaysAgo.getFullYear()}-${common.GetTwoDigitStringFunc(DateThirtyDaysAgo.getMonth() + 1)}-${common.GetTwoDigitStringFunc(DateThirtyDaysAgo.getDate())}`
+const DONKIFLREndDate = `${CurrentDate.getFullYear()}-${strMonth}-${strDay}`;
+
+//----------------------------DONKI APIs
+const DONKIAPIs = {
     //-------------------------------------------------DONKI
     //---DONKI - CME (Coronal Mass Ejection) for the past 7 days. 
     ApiDONKICME:  `https://api.nasa.gov/DONKI/CME?startDate=${DONKIStartDate}&endDate=${DONKIEndDate}&api_key=`,
@@ -44,7 +49,7 @@ const DONKIOptions = {
     //---DONKI - Interplanetary Shock (IPS) for the past 7 days
     ApiDONKIIPS: `https://api.nasa.gov/DONKI/IPS?startDate=${DONKIIPSStartDate}&endDate=${DONKIIPSEndDate}&api_key=`,
     //---DONKI - Solar Flare (FLR) for the past 7 days
-    ApiDONKIFLR: `https://api.nasa.gov/DONKI/FLR?startDate=${DONKIStartDate}&endDate=${DONKIEndDate}&api_key=`,
+    ApiDONKIFLR: `https://api.nasa.gov/DONKI/FLR?startDate=${DONKIFLRStartDate}&endDate=${DONKIFLREndDate}&api_key=`,
     //---DONKI - Solar Energetic Particles (SEP) for the past 7 days
     ApiDONKISEP: `https://api.nasa.gov/DONKI/SEP?startDate=${DONKIStartDate}&endDate=${DONKIEndDate}&api_key=`,
     //---DONKI - Magnetopause Crossing (MPC) for the past 7 days
@@ -61,12 +66,15 @@ const DONKIOptions = {
 
 function GetDONKINotifications(ApiKey)
 {
-    request({url: `${DONKIOptions.ApiDONKINotifications}${ApiKey}`, json: true}, function(error, response){
+    request({url: `${DONKIAPIs.ApiDONKINotifications}${ApiKey}`, json: true}, function(error, response){
             if(error){
                 common.ErrorPrintFunc(error);
             }
             else{
                 console.log("\n\n====================------------------------------------> DONKI Notifcation API Data for the Past Seven Days>");
+                console.log(`Notifications Data Start Time: ${DONKIStartDate}`);
+                console.log(`Notifications Data End Time: ${DONKIEndDate}\n`);
+                
                 const Messages = response.body;
                 for(Message in Messages)
                 {
@@ -85,13 +93,16 @@ function GetDONKINotifications(ApiKey)
 
 function GetDONKICME(ApiKey)
 {
-    request({url: `${DONKIOptions.ApiDONKICME}${ApiKey}`, json: true}, function(error, response){
+    request({url: `${DONKIAPIs.ApiDONKICME}${ApiKey}`, json: true}, function(error, response){
         if(error)
         {
             common.ErrorPrintFunc(error);
         }
         else{
             console.log("\n\n====================-------------------------------------> DONKI Coronal Mass Ejections API Data for the Past Seven Days>\n");
+            console.log(`CME Data Start Time: ${DONKIStartDate}`);
+            console.log(`CME Data End Time: ${DONKIEndDate}\n`);
+            
             const CMEData = response.body;
             for(CMEActivity in CMEData)
             {
@@ -110,16 +121,19 @@ function GetDONKICME(ApiKey)
 
 function GetDONKIGST(ApiKey)
 {
-    request({url: `${DONKIOptions.ApiDONKIGST}${ApiKey}`, json: true}, function(error, response){
+    request({url: `${DONKIAPIs.ApiDONKIGST}${ApiKey}`, json: true}, function(error, response){
             if(error){
                 common.ErrorPrintFunc(error);
             }
             else{
                 const GSTData = response.body;
                 nCount = 0;
+                console.log("\n\n====================--------------------------------> DONKI GeoMagnectic Storm API Data for the Past Seven Days>");
+                console.log(`GST Data Start Time: ${DONKIStartDate}`);
+                console.log(`GST Data End Time: ${DONKIEndDate}\n`);
+
                 for(GeoMagneticStorm in GSTData){
                     if(GSTData.hasOwnProperty.call(GSTData, GeoMagneticStorm)){
-                        console.log("\n\n====================--------------------------------> DONKI GeoMagnectic Storm API Data for the Past Seven Days>");
                         console.log("!!!STORM FOUND!!!")
                         console.log(`--- GeoMagnetic Storm ID: ${GSTData[GeoMagneticStorm].gstID}`);
                         console.log(`--- GeoMagnetic Storm Start Time: ${GSTData[GeoMagneticStorm].startTime}`);
@@ -143,13 +157,16 @@ function GetDONKIGST(ApiKey)
 
 function GetDONKICMEAnalysis(ApiKey)
 {
-    request({url: `${DONKIOptions.ApiDONKILookup}${ApiKey}`, json: true}, function(error, response){
+    request({url: `${DONKIAPIs.ApiDONKILookup}${ApiKey}`, json: true}, function(error, response){
         if(error)
         {
             common.ErrorPrintFunc(error);
         }
         else{
             console.log("\n\n====================------------------------------> DONKI Coronal Mass Ejections Analysis API Data for the Past Seven Days>");
+            console.log(`CME Data Start Time: ${DONKIStartDate}`);
+            console.log(`CME Data End Time: ${DONKIEndDate}\n`);
+
             const CMEData = response.body;
             for(CMEActivity in CMEData)
             {
@@ -202,7 +219,7 @@ function GetIPSData(ApiKey)
     // instruments: [ [Object], [Object] ],
     // linkedEvents: [ [Object] ],
     // sentNotifications: null
-    request({url: `${DONKIOptions.ApiDONKIIPS}${ApiKey}`, json: true}, (error, response) => {
+    request({url: `${DONKIAPIs.ApiDONKIIPS}${ApiKey}`, json: true}, (error, response) => {
         if(error)
         {
             common.ErrorPrintFunc(error);
@@ -212,7 +229,9 @@ function GetIPSData(ApiKey)
             
             //Print that data! 
             console.log("\n\n====================------------------------------> DONKI Interplanetary Shock (IPS) API Data for the Past 365 Days>");
-            
+            console.log(`DONKI IPS Data Start Date: ${DONKIIPSStartDate}`);
+            console.log(`DONKI IPS Data End Date: ${DONKIIPSEndDate}\n`);
+
             for(IPSEntry in IPSBody)
             {
                 if(IPSBody.hasOwnProperty.call(IPSBody, IPSEntry)){
@@ -228,6 +247,139 @@ function GetIPSData(ApiKey)
     });
 }
 
+function GetSolarFlareData(ApiKey)
+{
+    request({url: `${DONKIAPIs.ApiDONKIFLR}${ApiKey}`, json: true}, (error, response) => {
+        if(error)
+        {
+            common.ErrorPrintFunc(error);
+        }
+        else{
+            try{
+                //-----EXAMPLE Solar Flare Data return
+                // flrID: '2025-10-17T18:55:00-FLR-001',
+                // catalog: 'M2M_CATALOG',
+                // instruments: [ [Object] ],
+                // beginTime: '2025-10-17T18:55Z',
+                // peakTime: '2025-10-17T19:05Z',
+                // endTime: '2025-10-17T19:12Z',
+                // classType: 'M1.1',
+                // sourceLocation: 'N24W80',
+                // activeRegionNum: 14246,
+                // note: '',
+                // submissionTime: '2025-10-17T20:14Z',
+                // versionId: 1,
+                // link: 'https://webtools.ccmc.gsfc.nasa.gov/DONKI/view/FLR/41854/-1',
+                // linkedEvents: null,
+                // sentNotifications: null
+
+                console.log("\n\n====================------------------------------> DONKI Solar Flare (FLR) API Data for the Past 30 Days>");
+                console.log(`DONKI FLR Data Start Date: ${DONKIFLRStartDate}`);
+                console.log(`DONKI FLR Data End Date: ${DONKIFLREndDate}`);
+                if(response.body)
+                {
+                    const SolarFlareData = response.body;
+                    for(SolarFlares in SolarFlareData)
+                    {
+                        if(SolarFlareData.hasOwnProperty.call(SolarFlareData, SolarFlares)){
+                            if(SolarFlareData[SolarFlares].flrID)
+                            {
+                                console.log(`\n-------------------------> Solar Flare ID: ${SolarFlareData[SolarFlares].flrID}`);
+                            }
+                            else{
+                                console.log('----- NO SOLAR FLARE ID FOUND!!!!');
+                            }
+
+                            if(SolarFlareData[SolarFlares].submissionTime)
+                            {
+                                console.log(`-- Solar Flare Submission Time: ${SolarFlareData[SolarFlares].submissionTime}`);
+                            }
+                            else{
+                                console.log("----- NO SUBMISSION TIME FOUND!!!!!");
+                            }
+
+                            if(SolarFlareData[SolarFlares].catalog)
+                            {
+                                console.log(`--- Solar Flare Catalog: ${SolarFlareData[SolarFlares].catalog}`);
+                            }
+                            else{
+                                console.log('----- NO SOLAR FLARE CATALOG FOUND!!!!');
+                            }
+
+                            if(SolarFlareData[SolarFlares].classType)
+                            {
+                                console.log(`--- Solar Flare Class Type: ${SolarFlareData[SolarFlares].classType}`);
+                            }
+                            else{
+                                console.log('----- NO SOLAR FLARE CLASS TYPE FOUND!!!!');
+                            }
+
+                            if(SolarFlareData[SolarFlares].instruments.length > 0)
+                            {
+                                const SolarFlareInstruments = SolarFlareData[SolarFlares].instruments;
+                                for(Instrument in SolarFlareInstruments)
+                                {
+                                    if(SolarFlareInstruments.hasOwnProperty.call(SolarFlareInstruments, Instrument)){
+                                        if(SolarFlareInstruments[Instrument].displayName)
+                                        {
+                                            console.log(`--- Instrument Associated With the Solar Flare: ${SolarFlareInstruments[Instrument].displayName}`);
+                                        }
+                                        else{
+                                            console.log("----- NO INSTRUMENT NAME FOUND!!!!!");
+                                        }
+                                    }
+
+                                }
+                            }
+                            else{
+                                console.log('----- NO SOLAR FLARE INSTRUMENTS FOUND!!!!');
+                            }
+
+                            if(SolarFlareData[SolarFlares].beginTime)
+                            {
+                                console.log(`--- Solar Flare Start Time: ${SolarFlareData[SolarFlares].beginTime}`);
+                            }
+                            else{
+                                console.log("----- NO BEGIN TIME FOUND!!!!!");
+                            }
+
+                            if(SolarFlareData[SolarFlares].peakTime)
+                            {
+                                console.log(`--- Solar Flare Peak Time: ${SolarFlareData[SolarFlares].peakTime}`);
+                            }
+                            else{
+                                console.log("----- NO PEAK TIME FOUND!!!!!");
+                            }
+
+                            if(SolarFlareData[SolarFlares].endTime)
+                            {
+                                console.log(`--- Solar Flare End Time: ${SolarFlareData[SolarFlares].endTime}`);
+                            }
+                            else{
+                                console.log("----- NO END TIME FOUND!!!!!");
+                            }
+
+                            if(SolarFlareData[SolarFlares].link)
+                            {
+                                console.log(`---------------------------------------- Solar Flare Link: ${SolarFlareData[SolarFlares].link}`);
+                            }else{
+                                console.log("----- NO LINK FOUND!!!!!");
+                            }
+                        }
+                    }
+                }
+                else{
+                    console.log("VALID RESPONSE WAS RECIEVED BUT NO DATA WAS RETURNED!!!")
+                }
+
+            }catch(error)
+            {
+                common.ErrorPrintFunc(error);
+            }
+        }
+    });
+}
+
 
 function GetDONKIData(ApiKey)
 {
@@ -235,13 +387,17 @@ function GetDONKIData(ApiKey)
     GetDONKICME(ApiKey);
     GetDONKICMEAnalysis(ApiKey);
     GetDONKIGST(ApiKey);
-//TODO: Up next is the IPS (Interplanetary Shock API)
     GetIPSData(ApiKey);
+    //TODO: Up next is the FLR (Solar Flare API)
+    GetSolarFlareData(ApiKey);
+
 }
 
 module.exports = {
     GetDONKIDataFunc          : GetDONKIData,
     GetDONKINotificationsFunc : GetDONKINotifications,
     GetDONKICMEFunc           : GetDONKICME,
-    GetDONKIGSTFunc           : GetDONKIGST
+    GetDONKIGSTFunc           : GetDONKIGST,
+    GetDONKIIPSFunc           : GetIPSData,
+    GetDONKIFLRFunc           : GetSolarFlareData
 }
