@@ -71,7 +71,7 @@ function GetDONKINotifications(ApiKey)
                 common.ErrorPrintFunc(error);
             }
             else{
-                console.log("\n\n====================------------------------------------> DONKI Notifcation API Data for the Past Seven Days>");
+                common.PrintHeaderFunc("DONKI Notifcation API Data for the Past Seven Days");
                 console.log(`Notifications Data Start Time: ${DONKIStartDate}`);
                 console.log(`Notifications Data End Time: ${DONKIEndDate}\n`);
                 
@@ -99,7 +99,7 @@ function GetDONKICME(ApiKey)
             common.ErrorPrintFunc(error);
         }
         else{
-            console.log("\n\n====================-------------------------------------> DONKI Coronal Mass Ejections API Data for the Past Seven Days>\n");
+            common.PrintHeaderFunc("DONKI Coronal Mass Ejections API Data for the Past Seven Days\n");
             console.log(`CME Data Start Time: ${DONKIStartDate}`);
             console.log(`CME Data End Time: ${DONKIEndDate}\n`);
             
@@ -128,7 +128,7 @@ function GetDONKIGST(ApiKey)
             else{
                 const GSTData = response.body;
                 nCount = 0;
-                console.log("\n\n====================--------------------------------> DONKI GeoMagnectic Storm API Data for the Past Seven Days>");
+                common.PrintHeaderFunc("DONKI GeoMagnectic Storm API Data for the Past Seven Days");
                 console.log(`GST Data Start Time: ${DONKIStartDate}`);
                 console.log(`GST Data End Time: ${DONKIEndDate}\n`);
 
@@ -163,45 +163,85 @@ function GetDONKICMEAnalysis(ApiKey)
             common.ErrorPrintFunc(error);
         }
         else{
-            console.log("\n\n====================------------------------------> DONKI Coronal Mass Ejections Analysis API Data for the Past Seven Days>");
-            console.log(`CME Data Start Time: ${DONKIStartDate}`);
-            console.log(`CME Data End Time: ${DONKIEndDate}\n`);
+            try{
+                common.PrintHeaderFunc("DONKI Coronal Mass Ejections Analysis API Data for the Past Seven Days");
+                console.log(`CME Data Start Time: ${DONKIStartDate}`);
+                console.log(`CME Data End Time: ${DONKIEndDate}\n`);
+    
+                const CMEData = response.body;
+                for(CMEActivity in CMEData)
+                {
+                    //Example Return data: 
+                    // time21_5: '2025-12-08T04:41Z',
+                    // latitude: 11,
+                    // longitude: 11,
+                    // halfAngle: 34,
+                    // speed: 767,
+                    // type: 'C',
+                    // isMostAccurate: true,
+                    // associatedCMEID: '2025-12-08T01:38:00-CME-001',
+                    // associatedCMEstartTime: '2025-12-08T01:38Z',
+                    // note: 'Measurement based on fit in STEREO A COR2 with visible source location.',
+                    // associatedCMELink: 'https://webtools.ccmc.gsfc.nasa.gov/DONKI/view/CME/43340/-1',
+                    // catalog: 'M2M_CATALOG',
+                    // featureCode: 'LE',
+                    // dataLevel: '0',
+                    // measurementTechnique: 'SWPC_CAT',
+                    // imageType: 'running difference',
+                    // tilt: null,
+                    // minorHalfWidth: null,
+                    // speedMeasuredAtHeight: null,
+                    // submissionTime: '2025-12-08T14:16Z',
+                    // versionId: 1,
+                    // link: 
+                    if (response.body.hasOwnProperty.call(CMEData, CMEActivity)) {
+                        console.log("------------------------------------------------------- CME ANALYSIS FOUND");
+                        CMEEntry = CMEData[CMEActivity];
 
-            const CMEData = response.body;
-            for(CMEActivity in CMEData)
-            {
-                //Example Return data: 
-                // time21_5: '2025-12-08T04:41Z',
-                // latitude: 11,
-                // longitude: 11,
-                // halfAngle: 34,
-                // speed: 767,
-                // type: 'C',
-                // isMostAccurate: true,
-                // associatedCMEID: '2025-12-08T01:38:00-CME-001',
-                // associatedCMEstartTime: '2025-12-08T01:38Z',
-                // note: 'Measurement based on fit in STEREO A COR2 with visible source location.',
-                // associatedCMELink: 'https://webtools.ccmc.gsfc.nasa.gov/DONKI/view/CME/43340/-1',
-                // catalog: 'M2M_CATALOG',
-                // featureCode: 'LE',
-                // dataLevel: '0',
-                // measurementTechnique: 'SWPC_CAT',
-                // imageType: 'running difference',
-                // tilt: null,
-                // minorHalfWidth: null,
-                // speedMeasuredAtHeight: null,
-                // submissionTime: '2025-12-08T14:16Z',
-                // versionId: 1,
-                // link: 
-                if(response.body.hasOwnProperty.call(CMEData, CMEActivity)){
-                    console.log("!!!CME ANALYSIS FOUND!!!");
-                    console.log(`----- CME ID: ${CMEData[CMEActivity].associatedCMEID}`);
-                    console.log(`--- CME TIME: ${CMEData[CMEActivity].time21_5}`);
-                    console.log(`--- CME Note: ${CMEData[CMEActivity].note}`);
-                    console.log(`--- CME Link: ${CMEData[CMEActivity].associatedCMELink}`);
-                    console.log(`--- CME Alt Link: ${CMEData[CMEActivity].link}\n`);
+                        if (CMEEntry.associatedCMEID) {
+                            console.log(`-------------> CME ID: ${CMEEntry.associatedCMEID}`);
+                        }
+                        else {
+                            console.log("------------> NO CME ID RETURED!!!");
+                        }
+
+                        if (CMEEntry.time21_5) {
+                            console.log(`--- CME Time: ${CMEEntry.time21_5}`);
+                        }
+                        else {
+                            console.log("--- NO CME TIME RETURED!!!");
+                        }
+
+                        if (CMEEntry.note) {
+                            console.log(`--- CME Note:\n\t ${CMEEntry.note}`);
+                        }
+                        else {
+                            console.log("--- NO CME NOTE RETURED!!!");
+                        }
+
+                        if (CMEEntry.associatedCMELink) {
+                            console.log(`--- CME ASSOCIATED LINK`);
+                            console.log(`-------------------> ${CMEEntry.associatedCMELink}`);
+                        }
+                        else {
+                            console.log("--- NO ASSOCIATED LINK RETURED!!!");
+                        }
+
+                        if (CMEEntry.link) {
+                            console.log(`--- CME LINK`);
+                            console.log(`-------------------> ${CMEEntry.link}\n`);
+                        }
+                        else {
+                            console.log("--- NO CME LINK RETURED!!!\n\n");
+                        }
+                    }
                 }
             }
+            catch(error)
+            {
+                common.ErrorPrintFunc(error);
+            }
+            
         }
     });
 }
@@ -225,23 +265,65 @@ function GetIPSData(ApiKey)
             common.ErrorPrintFunc(error);
         }
         else{
-            IPSBody = response.body;
-            
-            //Print that data! 
-            console.log("\n\n====================------------------------------> DONKI Interplanetary Shock (IPS) API Data for the Past 365 Days>");
-            console.log(`DONKI IPS Data Start Date: ${DONKIIPSStartDate}`);
-            console.log(`DONKI IPS Data End Date: ${DONKIIPSEndDate}\n`);
 
-            for(IPSEntry in IPSBody)
-            {
-                if(IPSBody.hasOwnProperty.call(IPSBody, IPSEntry)){
-                    console.log(`----- Interplanetary Shock ID: ${IPSBody[IPSEntry].activityID}`);
-                    console.log(`--- Interplanetary Shock Catalog: ${IPSBody[IPSEntry].catalog}`);
-                    console.log(`--- Interplanetary Shock Location: ${IPSBody[IPSEntry].location}`);
-                    console.log(`--- Interplanetary Shock Event Time: ${IPSBody[IPSEntry].eventTime}`);
-                    console.log(`--- Interplanetary Shock Time Submitted: ${IPSBody[IPSEntry].submissionTime}`);
-                    console.log(`---------------------------------------- Interplanetary Shock Link: ${IPSBody[IPSEntry].link}\n`);
+            try {
+                IPSBody = response.body;
+            
+                //Print that data! 
+                common.PrintHeaderFunc("DONKI Interplanetary Shock (IPS) API Data for the Past 365 Days");
+                console.log(`DONKI IPS Data Start Date: ${DONKIIPSStartDate}`);
+                console.log(`DONKI IPS Data End Date: ${DONKIIPSEndDate}\n`);
+
+                for (IPSEntry in IPSBody) {
+                    if (IPSBody.hasOwnProperty.call(IPSBody, IPSEntry)) {
+                        const CurrentEntry = IPSBody[IPSEntry];
+                        if (CurrentEntry.activityID) {
+                            console.log(`----------------------------------> Interplanetary Shock ID: ${CurrentEntry.activityID}`);
+                        }
+                        else {
+                            console.log("----- NO ACTIVITY ID RETURNED!!!");
+                        }
+
+                        if (CurrentEntry.catalog) {
+                            console.log(`----- Interplanetary Shock Catalog: ${CurrentEntry.catalog}`);
+                        }
+                        else {
+                            console.log("----- NO CATALOG INFORMATION RETURNED!!!");
+                        }
+
+                        if (CurrentEntry.location) {
+                            console.log(`----- Interplanetary Shock Location: ${CurrentEntry.location}`);
+                        }
+                        else {
+                            console.log("----- NO LOCATION INFORMATION RETURNED!!!");
+                        }
+
+                        if (CurrentEntry.eventTime) {
+                            console.log(`----- Interplanetary Shock Event Time: ${CurrentEntry.eventTime}`);
+                        }
+                        else {
+                            console.log("----- NO EVENT TIME INFORMATION RETURNED!!!");
+                        }
+
+                        if (CurrentEntry.submissionTime) {
+                            console.log(`----- Interplanetary Shock Submission Time: ${CurrentEntry.submissionTime}`);
+                        }
+                        else {
+                            console.log("----- NO SUBMISSION TIME INFORMATION RETURNED!!!");
+                        }
+
+                        if (CurrentEntry.link) {
+                            console.log(`---------------------------------------- Interplanetary Shock Link: ${CurrentEntry.link}\n`);
+                        }
+                        else {
+                            console.log("----- NO LINK INFORMATION RETURNED!!!");
+                        }
+                    }
                 }
+            }
+            catch(error)
+            {
+                common.ErrorPrintFunc(error);
             }
         }
     });
@@ -273,7 +355,7 @@ function GetSolarFlareData(ApiKey)
                 // linkedEvents: null,
                 // sentNotifications: null
 
-                console.log("\n\n====================------------------------------> DONKI Solar Flare (FLR) API Data for the Past 30 Days>");
+                common.PrintHeaderFunc("DONKI Solar Flare (FLR) API Data for the Past 30 Days");
                 console.log(`DONKI FLR Data Start Date: ${DONKIFLRStartDate}`);
                 console.log(`DONKI FLR Data End Date: ${DONKIFLREndDate}`);
                 if(response.body)

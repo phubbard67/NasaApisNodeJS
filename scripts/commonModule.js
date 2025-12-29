@@ -20,7 +20,13 @@ function ErrorPrint(error){
     console.log(error);
 }
 
+function PrintHeader(strHeader)
+{
+    console.log(`\n\n====================------------------------------------------> ${strHeader}`);
+}
+
 module.exports = {
     GetTwoDigitStringFunc: GetTwoDigitString,
-    ErrorPrintFunc: ErrorPrint
+    ErrorPrintFunc: ErrorPrint,
+    PrintHeaderFunc: PrintHeader
 }
