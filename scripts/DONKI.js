@@ -71,21 +71,53 @@ function GetDONKINotifications(ApiKey)
                 common.ErrorPrintFunc(error);
             }
             else{
-                common.PrintHeaderFunc("DONKI Notifcation API Data for the Past Seven Days");
-                console.log(`Notifications Data Start Time: ${DONKIStartDate}`);
-                console.log(`Notifications Data End Time: ${DONKIEndDate}\n`);
-                
-                const Messages = response.body;
-                for(Message in Messages)
-                {
-                    if(response.body.hasOwnProperty.call(Messages, Message)){
-                        console.log("!!!!!!!!!!!!!!!!!!!!!!!!!----->>>>>>>>>>>>>>> DONKI NOTIFICATION FOUND <<<<<<<<<<<<<<<-----!!!!!!!!!!!!!!!!!!!!!!!!!")
-                        console.log(`\n------------------> Notification Type: ${Messages[Message].messageType}`);
-                        console.log(`\n------------------> Notification ID: ${Messages[Message].messageID}`);
-                        console.log(`\n------------------> Notification URL: ${Messages[Message].messageURL}`);
-                        console.log(`\n------------------> Notification Timestamp: ${Messages[Message].messageIssueTime}\n`);
-                        console.log(`--> Notification:\n${Messages[Message].messageBody}`);
+                try{
+                    common.PrintHeaderFunc("DONKI Notifcation API Data for the Past Seven Days");
+                    console.log(`Notifications Data Start Time: ${DONKIStartDate}`);
+                    console.log(`Notifications Data End Time: ${DONKIEndDate}\n`);
+                    
+                    const Messages = response.body;
+                    for(Message in Messages)
+                    {
+                        if(response.body.hasOwnProperty.call(Messages, Message)){
+                            const MessageData = Messages[Message];
+
+                            console.log("!!!!!!!!!!!!!!!!!!!!!!!!!--------------------------------------------------->>>>>>>>>>>>>>> DONKI NOTIFICATION FOUND")
+                            if (MessageData.messageType) {
+                                console.log(`\n------------------> Notification Type: ${MessageData.messageType}`);
+                            }
+                            else {
+                                common.PrintNoDataFoundFunc("NOTIFICATION TYPE");
+                            }
+                            if (MessageData.messageID) {
+                                console.log(`\n------------------> Notification Id: ${MessageData.messageID}`);
+                            }
+                            else {
+                                common.PrintNoDataFoundFunc("NOTIFICATION ID");
+                            }
+                            if (MessageData.messageURL) {
+                                console.log(`\n------------------> Notification URL: ${MessageData.messageURL}`);
+                            }
+                            else {
+                                common.PrintNoDataFoundFunc("NOTIFICATION URL");
+                            }
+                            if (MessageData.messageIssueTime) {
+                                console.log(`\n------------------> Notification Timestamp: ${MessageData.messageIssueTime}`);
+                            }
+                            else {
+                                common.PrintNoDataFoundFunc("NOTIFICATION TIMESTAMP");
+                            }
+                            if (MessageData.messageBody) {
+                                console.log(`--> Notification:\n${MessageData.messageBody}`);
+                            }
+                            else {
+                                common.PrintNoDataFoundFunc("NOTIFICATION BODY");
+                            }
+
+                        }
                     }
+                }catch(error){
+                    common.ErrorPrintFunc(error);
                 }
             }
     });
@@ -99,21 +131,53 @@ function GetDONKICME(ApiKey)
             common.ErrorPrintFunc(error);
         }
         else{
-            common.PrintHeaderFunc("DONKI Coronal Mass Ejections API Data for the Past Seven Days\n");
-            console.log(`CME Data Start Time: ${DONKIStartDate}`);
-            console.log(`CME Data End Time: ${DONKIEndDate}\n`);
-            
-            const CMEData = response.body;
-            for(CMEActivity in CMEData)
-            {
-                if(response.body.hasOwnProperty.call(CMEData, CMEActivity)){
-                    console.log("!!!CME FOUND!!!")
-                    console.log(`--- CME Activity ID: ${CMEData[CMEActivity].activityID}`);
-                    console.log(`--- CME Submission Time ${CMEData[CMEActivity].submissionTime}`);
-                    console.log(`--- CME Link: ${CMEData[CMEActivity].link}`)
-                    console.log(`\nNOTE: \n    ${CMEData[CMEActivity].note}\n`)
-                    console.log(`----------->\n`)
+            try{
+                common.PrintHeaderFunc("DONKI Coronal Mass Ejections API Data for the Past Seven Days\n");
+                console.log(`CME Data Start Time: ${DONKIStartDate}`);
+                console.log(`CME Data End Time: ${DONKIEndDate}\n`);
+                
+                const CMEData = response.body;
+                for(CMEActivity in CMEData)
+                {
+                    if(response.body.hasOwnProperty.call(CMEData, CMEActivity)){
+                        console.log("--------------------------------> Coronal Mass Ejection Found");
+                        CMEActivityData = CMEData[CMEActivity];
+
+                        if(CMEActivityData.activityID)
+                        {
+                            console.log(`--- CME Activity ID: ${CMEActivityData.activityID}`);
+                        }
+                        else{
+                            common.PrintNoDataFoundFunc("CME ACTIVITY ID");
+                        }
+
+                        if (CMEActivityData.submissionTime) {
+                            console.log(`--- CME Submission Time: ${CMEActivityData.submissionTime}`);
+                        }
+                        else {
+                            common.PrintNoDataFoundFunc("CME SUBMISSION TIME");
+                        }
+
+                        if (CMEActivityData.link) {
+                            console.log(`--- CME Link: ${CMEActivityData.link}`);
+                        }
+                        else {
+                            common.PrintNoDataFoundFunc("CME LINK");
+                        }
+
+                        if (CMEActivityData.note) {
+                            console.log(`\nNOTE: \n    ${CMEActivityData.note}\n`);
+                            console.log(`----------->\n`)
+                        }
+                        else {
+                            common.PrintNoDataFoundFunc("CME NOTE");
+                        }
+                    }
                 }
+            }
+            catch(error)
+            {
+                common.ErrorPrintFunc(error);
             }
         }
     });
@@ -126,31 +190,64 @@ function GetDONKIGST(ApiKey)
                 common.ErrorPrintFunc(error);
             }
             else{
-                const GSTData = response.body;
-                nCount = 0;
-                common.PrintHeaderFunc("DONKI GeoMagnectic Storm API Data for the Past Seven Days");
-                console.log(`GST Data Start Time: ${DONKIStartDate}`);
-                console.log(`GST Data End Time: ${DONKIEndDate}\n`);
+                try{
+                    const GSTData = response.body;
+                    nCount = 0;
+                    common.PrintHeaderFunc("DONKI GeoMagnectic Storm API Data for the Past Seven Days");
+                    console.log(`GST Data Start Time: ${DONKIStartDate}`);
+                    console.log(`GST Data End Time: ${DONKIEndDate}\n`);
+    
+                    for(GeoMagneticStorm in GSTData){
+                        if(GSTData.hasOwnProperty.call(GSTData, GeoMagneticStorm)){
+                            console.log("-----------------------> GeoMagnetic Storm Found");
+                            GeoStormData = GSTData[GeoMagneticStorm];
 
-                for(GeoMagneticStorm in GSTData){
-                    if(GSTData.hasOwnProperty.call(GSTData, GeoMagneticStorm)){
-                        console.log("!!!STORM FOUND!!!")
-                        console.log(`--- GeoMagnetic Storm ID: ${GSTData[GeoMagneticStorm].gstID}`);
-                        console.log(`--- GeoMagnetic Storm Start Time: ${GSTData[GeoMagneticStorm].startTime}`);
-                        console.log(`--------------- Link to Event Information: ${GSTData[GeoMagneticStorm].link}`)
-                        console.log(`\nEvents Related to the Storm by Event ID:`);
-                        const RelatedEvents = GSTData[GeoMagneticStorm].linkedEvents;
-                        for(GSTEvent in RelatedEvents)
-                        {
-                            if(RelatedEvents.hasOwnProperty.call(RelatedEvents, GSTEvent))
+                            if(GeoStormData.gstID)
                             {
-                                console.log(`---- Event ID: ${RelatedEvents[GSTEvent].activityID}`);
+                                console.log(`--- GeoMagnetic Storm ID: ${GeoStormData.gstID}`);
                             }
+                            else{
+                                common.PrintNoDataFoundFunc(`GEO STORM ID`);
+                            }
+
+                            if (GeoStormData.startTime) {
+                                console.log(`--- GeoMagnetic Storm Start Time: ${GeoStormData.startTime}`);
+                            }
+                            else {
+                                common.PrintNoDataFoundFunc(`GEO STORM START TIME`);
+                            }
+
+                            if (GeoStormData.link) {
+                                console.log(`--------------- Link to Event Information: ${GeoStormData.link}`);
+                            }
+                            else {
+                                common.PrintNoDataFoundFunc(`GEO STORM LINK`);
+                            }
+
+                            console.log(`\nEvents Related to the Storm by Event ID:`);
+                            const RelatedEvents = GSTData[GeoMagneticStorm].linkedEvents;
+                            for(GSTEvent in RelatedEvents)
+                            {
+                                if(RelatedEvents.hasOwnProperty.call(RelatedEvents, GSTEvent))
+                                {
+                                    if(RelatedEvents[GSTEvent].activityID)
+                                    {
+                                        console.log(`---- Event ID: ${RelatedEvents[GSTEvent].activityID}`);
+                                    }
+                                    else{
+                                        common.PrintNoDataFoundFunc("RELATED GEO STORM EVENT ACTIVITY ID");
+                                    }
+                                }
+                            }
+                            nCount++;
                         }
-                        nCount++;
                     }
+                    console.log(`------------------------------------------- Number of GeoMagnetic Storms Returned for the Past 7 Days: ${nCount}`);
                 }
-                console.log(`------------------------------------------- Number of GeoMagnetic Storms in the Past 7 Days: ${nCount}`);
+                catch(error)
+                {
+                    common.ErrorPrintFunc(error);
+                }
             }
     });
 }
@@ -202,21 +299,21 @@ function GetDONKICMEAnalysis(ApiKey)
                             console.log(`-------------> CME ID: ${CMEEntry.associatedCMEID}`);
                         }
                         else {
-                            console.log("------------> NO CME ID RETURED!!!");
+                            common.PrintNoDataFoundFunc("CME ID");
                         }
 
                         if (CMEEntry.time21_5) {
                             console.log(`--- CME Time: ${CMEEntry.time21_5}`);
                         }
                         else {
-                            console.log("--- NO CME TIME RETURED!!!");
+                            common.PrintNoDataFoundFunc("CME TIME");
                         }
 
                         if (CMEEntry.note) {
                             console.log(`--- CME Note:\n\t ${CMEEntry.note}`);
                         }
                         else {
-                            console.log("--- NO CME NOTE RETURED!!!");
+                            common.PrintNoDataFoundFunc("CME NOTE");
                         }
 
                         if (CMEEntry.associatedCMELink) {
@@ -224,7 +321,7 @@ function GetDONKICMEAnalysis(ApiKey)
                             console.log(`-------------------> ${CMEEntry.associatedCMELink}`);
                         }
                         else {
-                            console.log("--- NO ASSOCIATED LINK RETURED!!!");
+                            common.PrintNoDataFoundFunc("ASSOCIATED LINK");
                         }
 
                         if (CMEEntry.link) {
@@ -232,7 +329,8 @@ function GetDONKICMEAnalysis(ApiKey)
                             console.log(`-------------------> ${CMEEntry.link}\n`);
                         }
                         else {
-                            console.log("--- NO CME LINK RETURED!!!\n\n");
+                            common.PrintNoDataFoundFunc("CME LINK");
+                            console.log("\n\n");
                         }
                     }
                 }
@@ -281,42 +379,42 @@ function GetIPSData(ApiKey)
                             console.log(`----------------------------------> Interplanetary Shock ID: ${CurrentEntry.activityID}`);
                         }
                         else {
-                            console.log("----- NO ACTIVITY ID RETURNED!!!");
+                            common.PrintNoDataFoundFunc("NO ACTIVITY ID RETURNED");
                         }
 
                         if (CurrentEntry.catalog) {
                             console.log(`----- Interplanetary Shock Catalog: ${CurrentEntry.catalog}`);
                         }
                         else {
-                            console.log("----- NO CATALOG INFORMATION RETURNED!!!");
+                            common.PrintNoDataFoundFunc("CATALOG INFORMATION");
                         }
 
                         if (CurrentEntry.location) {
                             console.log(`----- Interplanetary Shock Location: ${CurrentEntry.location}`);
                         }
                         else {
-                            console.log("----- NO LOCATION INFORMATION RETURNED!!!");
+                            common.PrintNoDataFoundFunc("LOCATION INFORMATION");
                         }
 
                         if (CurrentEntry.eventTime) {
                             console.log(`----- Interplanetary Shock Event Time: ${CurrentEntry.eventTime}`);
                         }
                         else {
-                            console.log("----- NO EVENT TIME INFORMATION RETURNED!!!");
+                            common.PrintNoDataFoundFunc("EVENT TIME INFORMATION");
                         }
 
                         if (CurrentEntry.submissionTime) {
                             console.log(`----- Interplanetary Shock Submission Time: ${CurrentEntry.submissionTime}`);
                         }
                         else {
-                            console.log("----- NO SUBMISSION TIME INFORMATION RETURNED!!!");
+                            common.PrintNoDataFoundFunc("NO SUBMISSION TIME INFORMATION");
                         }
 
                         if (CurrentEntry.link) {
                             console.log(`---------------------------------------- Interplanetary Shock Link: ${CurrentEntry.link}\n`);
                         }
                         else {
-                            console.log("----- NO LINK INFORMATION RETURNED!!!");
+                            common.PrintNoDataFoundFunc("LINK INFORMATION");
                         }
                     }
                 }
@@ -369,7 +467,7 @@ function GetSolarFlareData(ApiKey)
                                 console.log(`\n-------------------------> Solar Flare ID: ${SolarFlareData[SolarFlares].flrID}`);
                             }
                             else{
-                                console.log('----- NO SOLAR FLARE ID FOUND!!!!');
+                                common.PrintNoDataFoundFunc("SOLAR FLARE ID");
                             }
 
                             if(SolarFlareData[SolarFlares].submissionTime)
@@ -377,7 +475,7 @@ function GetSolarFlareData(ApiKey)
                                 console.log(`-- Solar Flare Submission Time: ${SolarFlareData[SolarFlares].submissionTime}`);
                             }
                             else{
-                                console.log("----- NO SUBMISSION TIME FOUND!!!!!");
+                                common.PrintNoDataFoundFunc("SUBMISSION TIME");
                             }
 
                             if(SolarFlareData[SolarFlares].catalog)
@@ -385,7 +483,7 @@ function GetSolarFlareData(ApiKey)
                                 console.log(`--- Solar Flare Catalog: ${SolarFlareData[SolarFlares].catalog}`);
                             }
                             else{
-                                console.log('----- NO SOLAR FLARE CATALOG FOUND!!!!');
+                                common.PrintNoDataFoundFunc("SOLAR FLARE CATALOG");
                             }
 
                             if(SolarFlareData[SolarFlares].classType)
@@ -393,7 +491,7 @@ function GetSolarFlareData(ApiKey)
                                 console.log(`--- Solar Flare Class Type: ${SolarFlareData[SolarFlares].classType}`);
                             }
                             else{
-                                console.log('----- NO SOLAR FLARE CLASS TYPE FOUND!!!!');
+                                common.PrintNoDataFoundFunc("SOLAR FLARE CLASS TYPE");
                             }
 
                             if(SolarFlareData[SolarFlares].instruments.length > 0)
@@ -407,14 +505,14 @@ function GetSolarFlareData(ApiKey)
                                             console.log(`--- Instrument Associated With the Solar Flare: ${SolarFlareInstruments[Instrument].displayName}`);
                                         }
                                         else{
-                                            console.log("----- NO INSTRUMENT NAME FOUND!!!!!");
+                                            common.PrintNoDataFoundFunc("INSTRUMENT NAME");
                                         }
                                     }
 
                                 }
                             }
                             else{
-                                console.log('----- NO SOLAR FLARE INSTRUMENTS FOUND!!!!');
+                                common.PrintNoDataFoundFunc("NO SOLAR FLARE INSTRUMENTS");
                             }
 
                             if(SolarFlareData[SolarFlares].beginTime)
@@ -422,7 +520,7 @@ function GetSolarFlareData(ApiKey)
                                 console.log(`--- Solar Flare Start Time: ${SolarFlareData[SolarFlares].beginTime}`);
                             }
                             else{
-                                console.log("----- NO BEGIN TIME FOUND!!!!!");
+                                common.PrintNoDataFoundFunc("BEGIN TIME");
                             }
 
                             if(SolarFlareData[SolarFlares].peakTime)
@@ -430,7 +528,7 @@ function GetSolarFlareData(ApiKey)
                                 console.log(`--- Solar Flare Peak Time: ${SolarFlareData[SolarFlares].peakTime}`);
                             }
                             else{
-                                console.log("----- NO PEAK TIME FOUND!!!!!");
+                                common.PrintNoDataFoundFunc("PEAK TIME");
                             }
 
                             if(SolarFlareData[SolarFlares].endTime)
@@ -438,14 +536,14 @@ function GetSolarFlareData(ApiKey)
                                 console.log(`--- Solar Flare End Time: ${SolarFlareData[SolarFlares].endTime}`);
                             }
                             else{
-                                console.log("----- NO END TIME FOUND!!!!!");
+                                common.PrintNoDataFoundFunc("END TIME");
                             }
 
                             if(SolarFlareData[SolarFlares].link)
                             {
                                 console.log(`---------------------------------------- Solar Flare Link: ${SolarFlareData[SolarFlares].link}`);
                             }else{
-                                console.log("----- NO LINK FOUND!!!!!");
+                                common.PrintNoDataFoundFunc("LINK");
                             }
                         }
                     }

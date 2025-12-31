@@ -25,8 +25,14 @@ function PrintHeader(strHeader)
     console.log(`\n\n====================------------------------------------------> ${strHeader}`);
 }
 
+function PrintNoDataFound(dataType)
+{
+    console.log(`------------> NO ${dataType} RETURED!!!`);
+}
+
 module.exports = {
     GetTwoDigitStringFunc: GetTwoDigitString,
     ErrorPrintFunc: ErrorPrint,
-    PrintHeaderFunc: PrintHeader
+    PrintHeaderFunc: PrintHeader, 
+    PrintNoDataFoundFunc: PrintNoDataFound
 }
