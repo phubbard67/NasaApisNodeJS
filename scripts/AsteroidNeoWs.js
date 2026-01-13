@@ -51,49 +51,63 @@ function GetAsteroidNeoWsData(ApiKey)
         else{
             console.log("\n\n====================-------------------------------------> AsteroidNeoWs Feed API Data for the Next Seven Days>\n");
             //Read out all Near Earth Ojects found
-            const nNumberOfNEOs = response.body.element_count;
-            console.log(`   Number of Asteroids of interest in the Next 7 Days: ${nNumberOfNEOs}`);
-            const NearEarthObjects = response.body.near_earth_objects;
-            for(const date in NearEarthObjects)
-            {
-                if(response.body.hasOwnProperty.call(NearEarthObjects, date)){
-                    const NEOs = NearEarthObjects[date];
-                    console.log(`--------------------------------------- Asteroids for Date -> ${date}`);
-                    for(const NearEarthObject in NEOs)
+
+            if (response.body) {
+                AsteroidFeedBody = response.body;
+
+                if(AsteroidFeedBody.element_count)
+                {
+                    const nNumberOfNEOs = AsteroidFeedBody.element_count;
+                    console.log(`   Number of Asteroids of interest in the Next 7 Days: ${nNumberOfNEOs}`);
+                    const NearEarthObjects = response.body.near_earth_objects;
+                    for(const date in NearEarthObjects)
                     {
-                        if(response.body.hasOwnProperty.call(NEOs, NearEarthObject)){
-
-                            if(NEOs[NearEarthObject].is_potentially_hazardous_asteroid == true)
+                        if(AsteroidFeedBody.hasOwnProperty.call(NearEarthObjects, date)){
+                            const NEOs = NearEarthObjects[date];
+                            console.log(`--------------------------------------- Asteroids for Date -> ${date}`);
+                            for(const NearEarthObject in NEOs)
                             {
-                                console.log(`\n !!!!!!!!!!!!!!POTENTIALLY HAZARDOUS TO EARTH!!!!!!!!!!!!!!\n`);
-                                console.log(`----- Asteroid Name: ${NEOs[NearEarthObject].name}`);
-                                const PotentialCloseCallDates = NEOs[NearEarthObject].close_approach_data;
-                                if(PotentialCloseCallDates.length > 0)
-                                {
-                                    let dateBuff = PotentialCloseCallDates[0].close_approach_date;
-                                    let approchYearBuffer = dateBuff.substring(0, 4);
-                                    let intYearBuffer = parseInt(approchYearBuffer);
-
-                                    j = 0;
-                                    while(intYearBuffer < CurrentDate.getFullYear())
+                                if(NearEarthObjects.hasOwnProperty.call(NEOs, NearEarthObject)){
+        
+                                    if(NEOs[NearEarthObject].is_potentially_hazardous_asteroid == true)
                                     {
-                                        dateBuff = PotentialCloseCallDates[j].close_approach_date;
-                                        approchYearBuffer = dateBuff.substring(0, 4);
-                                        intYearBuffer = parseInt(approchYearBuffer);
-                                        j++;
+                                        console.log(`\n !!!!!!!!!!!!!!POTENTIALLY HAZARDOUS TO EARTH!!!!!!!!!!!!!!\n`);
+                                        console.log(`----- Asteroid Name: ${NEOs[NearEarthObject].name}`);
+                                        const PotentialCloseCallDates = NEOs[NearEarthObject].close_approach_data;
+                                        if(PotentialCloseCallDates.length > 0)
+                                        {
+                                            let dateBuff = PotentialCloseCallDates[0].close_approach_date;
+                                            let approchYearBuffer = dateBuff.substring(0, 4);
+                                            let intYearBuffer = parseInt(approchYearBuffer);
+        
+                                            j = 0;
+                                            while(intYearBuffer < CurrentDate.getFullYear())
+                                            {
+                                                dateBuff = PotentialCloseCallDates[j].close_approach_date;
+                                                approchYearBuffer = dateBuff.substring(0, 4);
+                                                intYearBuffer = parseInt(approchYearBuffer);
+                                                j++;
+                                            }
+                                            console.log(`----- Next Planet of Close Approach: ${PotentialCloseCallDates[j].orbiting_body}`);
+                                            console.log(`----- Time of Close Approach to ${PotentialCloseCallDates[j].orbiting_body}: ${PotentialCloseCallDates[j].close_approach_date_full}\n`);
+                                            console.log(` ^^^^^^^^^^^^^^POTENTIALLY HAZARDOUS TO EARTH^^^^^^^^^^^^^^\n`);
+                                        }
                                     }
-                                    console.log(`----- Next Planet of Close Approach: ${PotentialCloseCallDates[j].orbiting_body}`);
-                                    console.log(`----- Time of Close Approach to ${PotentialCloseCallDates[j].orbiting_body}: ${PotentialCloseCallDates[j].close_approach_date_full}\n`);
-                                    console.log(` ^^^^^^^^^^^^^^POTENTIALLY HAZARDOUS TO EARTH^^^^^^^^^^^^^^\n`);
+                                    else{
+                                        console.log(`----- Asteroid Name: ${NEOs[NearEarthObject].name}`);
+                                        console.log(`--- Asteroid Potentially Hazardous: ${NEOs[NearEarthObject].is_potentially_hazardous_asteroid}\n`);
+                                    }
                                 }
                             }
-                            else{
-                                console.log(`----- Asteroid Name: ${NEOs[NearEarthObject].name}`);
-                                console.log(`--- Asteroid Potentially Hazardous: ${NEOs[NearEarthObject].is_potentially_hazardous_asteroid}\n`);
-                            }
                         }
-                    }
+                    }    
                 }
+                else{
+                    common.PrintNoDataFoundFunc("NO ELEMENT COUNT FOUND FOR ASTEROIDNEOWS FEED API");
+                }
+            }
+            else {
+                common.PrintNoDataFoundFunc("NO BODY RETURNED FOR ASTEROIDNEOWS FEED API");
             }
         }
     });
