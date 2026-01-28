@@ -136,7 +136,7 @@ try{
     //     lookup a specific Asteroid with its NASA JPL small body id, as well as browse the overall data-set.
     //     Data-set: All the data is from the NASA JPL Asteroid team (http://neo.jpl.nasa.gov/).
     //     This API is maintained by SpaceRocks Team: David Greenfield, Arezu Sarvestani, Jason English and Peter Baunach."
-    AsteroidNeoWs.GetAsteroidNeoWsDataFunc(ApiKey);
+    AsteroidNeoWs.GetAllAsteroidNeoWsDataFunc(ApiKey);
 
     //DONKI-----
     // FROM api.nasa.gov
