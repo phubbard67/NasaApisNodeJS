@@ -48,10 +48,10 @@ const DONKIAPIs = {
     ApiDONKIGST: `https://api.nasa.gov/DONKI/GST?startDate=${DONKIStartDate}&endDate=${DONKIEndDate}&api_key=`,
     //---DONKI - Interplanetary Shock (IPS) for the past 7 days
     ApiDONKIIPS: `https://api.nasa.gov/DONKI/IPS?startDate=${DONKIIPSStartDate}&endDate=${DONKIIPSEndDate}&api_key=`,
-    //---DONKI - Solar Flare (FLR) for the past 7 days
+    //---DONKI - Solar Flare (FLR) for the past 30 days
     ApiDONKIFLR: `https://api.nasa.gov/DONKI/FLR?startDate=${DONKIFLRStartDate}&endDate=${DONKIFLREndDate}&api_key=`,
-    //---DONKI - Solar Energetic Particles (SEP) for the past 7 days
-    ApiDONKISEP: `https://api.nasa.gov/DONKI/SEP?startDate=${DONKIStartDate}&endDate=${DONKIEndDate}&api_key=`,
+    //---DONKI - Solar Energetic Particles (SEP) for the past 30 days
+    ApiDONKISEP: `https://api.nasa.gov/DONKI/SEP?startDate=${DONKIFLRStartDate}&endDate=${DONKIFLRStartDate}&api_key=`,
     //---DONKI - Magnetopause Crossing (MPC) for the past 7 days
     ApiDONKIMPC: `https://api.nasa.gov/DONKI/MPC?startDate=${DONKIStartDate}&endDate=${DONKIEndDate}&api_key=`,
     //---DONKI - Radiation Belt Enhancement (RBE) for the past 7 days
@@ -549,7 +549,7 @@ function GetSolarFlareData(ApiKey)
                     }
                 }
                 else{
-                    console.log("VALID RESPONSE WAS RECIEVED BUT NO DATA WAS RETURNED!!!")
+                    console.log("VALID RESPONSE WAS RECIEVED BUT NO DATA WAS RETURNED!!!");
                 }
 
             }catch(error)
@@ -560,17 +560,43 @@ function GetSolarFlareData(ApiKey)
     });
 }
 
+function GetDONKISEPData(ApiKey)
+{
+    request({ url: `${DONKIAPIs.ApiDONKISEP}${ApiKey}`, json: true }, (error, response) => {
+        if (error) {
+            common.ErrorPrintFunc(error);
+        }
+        else {
+            try {
+                if(response.body)
+                {
+                    common.PrintHeaderFunc("DONKI Solar Energetic Particle (SEP) API Data for the Past 30 Days");
+                    console.log(`DONKI SEP Data Start Date: ${DONKIFLRStartDate}`);
+                    console.log(`DONKI SEP Data End Date: ${DONKIFLREndDate}`);
+                    console.log(response.body);
+                }
+                else{
+                    console.log("VALID RESPONSE WAS RECIEVED BUT NO DATA WAS RETURNED!!!");
+                }
+            }
+            catch {
+                common.ErrorPrintFunc(error);   
+            }
+        }
+    });
+}
 
 function GetDONKIData(ApiKey)
 {
-    GetDONKINotifications(ApiKey);
-    GetDONKICME(ApiKey);
-    GetDONKICMEAnalysis(ApiKey);
-    GetDONKIGST(ApiKey);
-    GetIPSData(ApiKey);
-    //TODO: Up next is the FLR (Solar Flare API)
-    GetSolarFlareData(ApiKey);
-
+    //GetDONKINotifications(ApiKey);
+    //GetDONKICME(ApiKey);
+    //GetDONKICMEAnalysis(ApiKey);
+    //GetDONKIGST(ApiKey);
+    //GetIPSData(ApiKey);
+    //GetSolarFlareData(ApiKey);
+    //TODO: Up next is the SEP (Solar Energetic Particle
+    GetDONKISEPData(ApiKey);
+    
 }
 
 module.exports = {
@@ -579,5 +605,6 @@ module.exports = {
     GetDONKICMEFunc           : GetDONKICME,
     GetDONKIGSTFunc           : GetDONKIGST,
     GetDONKIIPSFunc           : GetIPSData,
-    GetDONKIFLRFunc           : GetSolarFlareData
+    GetDONKIFLRFunc           : GetSolarFlareData,
+    GetDONKISEPFunc           : GetDONKISEPData
 }
