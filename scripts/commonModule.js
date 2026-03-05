@@ -30,9 +30,21 @@ function PrintNoDataFound(dataType)
     console.log(`------------> NO ${dataType} RETURED!!!`);
 }
 
+function PrintSectionID(sectionName, sectionID)
+{
+    console.log(`\n-------------------------> ${sectionName} ID: ${sectionID}`);
+}
+
+function PrintSectionLink(sectionName, sectionLink)
+{
+    console.log(`---------------------------------------- ${sectionName} Link: ${sectionLink}`);
+}
+
 module.exports = {
     GetTwoDigitStringFunc: GetTwoDigitString,
     ErrorPrintFunc: ErrorPrint,
     PrintHeaderFunc: PrintHeader, 
-    PrintNoDataFoundFunc: PrintNoDataFound
+    PrintNoDataFoundFunc: PrintNoDataFound, 
+    PrintSectionIDFunc: PrintSectionID, 
+    PrintSectionLinkFunc: PrintSectionLink
 }
