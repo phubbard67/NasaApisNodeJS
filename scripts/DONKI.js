@@ -290,7 +290,7 @@ function GetDONKICMEAnalysis(ApiKey)
                 common.PrintHeaderFunc("DONKI Coronal Mass Ejections Analysis API Data for the Past Seven Days");
                 console.log(`CME Data Start Time: ${DONKIStartDate}`);
                 console.log(`CME Data End Time: ${DONKIEndDate}\n`);
-                console.log(response.body)
+
                 if (response.body == DONKIBodyError || response.body == DONKIBodyErrorTimeout) 
                 {
                     common.ErrorPrintFunc(`CME ANALYSIS BODY ERROR RETURN: ${response.body}`);
