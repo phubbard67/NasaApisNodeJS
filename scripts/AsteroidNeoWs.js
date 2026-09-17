@@ -7,7 +7,6 @@
 //------        at this time, and displays some data of 
 //------        of interest. Its just a demo... for now. 
 //----------------------------------------------Global Vars
-const request = require('request');
 const common = require('./commonModule');
 const CurrentDate = new Date();
 
@@ -44,23 +43,30 @@ const AsteroidNeoWsOptions = {
     ApiAsteroidNeoWsBrowse: `https://api.nasa.gov/neo/rest/v1/neo/browse?api_key=`
 }
 
-function GetAsteroidNeoWsFeed(ApiKey) {
+async function GetAsteroidNeoWsFeed(ApiKey) 
+{
     //======================Get the Asteriod Feed Information
-    const CurrentAsteriodFeed = request({ url: `${AsteroidNeoWsOptions.ApiAsteroidNeoWsFeed}${ApiKey}`, json: true }, function (error, response) {
-        if (error) {
-            common.ErrorPrintFunc(error);
+    //TODO: Change the rest of the functions to use fetch instead of request, since request is deprecated.
+    try
+    {
+        const url = `${AsteroidNeoWsOptions.ApiAsteroidNeoWsFeed}${ApiKey}`;
+        const response = await fetch(url);
+
+        if(!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status} : ${response.statusText}`);
         }
-        else {
-            console.log("\n\n====================-------------------------------------> AsteroidNeoWs Feed API Data for the Next Seven Days>\n");
+
+        const body = await respone.json();
+        console.log("\n\n====================-------------------------------------> AsteroidNeoWs Feed API Data for the Next Seven Days>\n");
             //Read out all Near Earth Ojects found
 
-            if (response.body) {
-                AsteroidFeedBody = response.body;
+            if (body) {
+                AsteroidFeedBody = body;
 
                 if (AsteroidFeedBody.element_count) {
                     const nNumberOfNEOs = AsteroidFeedBody.element_count;
                     console.log(`   Number of Asteroids of interest in the Next 7 Days: ${nNumberOfNEOs}`);
-                    const NearEarthObjects = response.body.near_earth_objects;
+                    const NearEarthObjects = body.near_earth_objects;
                     for (const date in NearEarthObjects) {
                         if (AsteroidFeedBody.hasOwnProperty.call(NearEarthObjects, date)) {
                             const NEOs = NearEarthObjects[date];
@@ -117,12 +123,16 @@ function GetAsteroidNeoWsFeed(ApiKey) {
             else {
                 common.PrintNoDataFoundFunc("NO BODY RETURNED FOR ASTEROIDNEOWS FEED API");
             }
-        }
-    });
-    //===End Asteroid Feed
+    }
+    catch (error) {
+        common.ErrorPrintFunc(error);
+    }
 }
+    //===End Asteroid Feed
 
-function GetAsteroidByDesignation(ApiKey, nDesignation) {
+
+async function GetAsteroidByDesignation(ApiKey, nDesignation) 
+{
 
     bNoDesignation = false;
 
@@ -133,42 +143,62 @@ function GetAsteroidByDesignation(ApiKey, nDesignation) {
         bNoDesignation = true;
     }
 
-    //======================Get A particular Asteroid
-    const CurrentCeresInformation = request({ url: `${AsteroidNeoWsOptions.ApiAsteroidNeoWsLookup}${ApiKey}`, json: true, headers: AsteroidNeoWsOptions.headers }, function (error, response) {
-        if (error) {
-            common.ErrorPrintFunc(error);
+    try
+    {
+        //======================Get A particular Asteroid
+        const CurrentCeresInformation = await fetch(`${AsteroidNeoWsOptions.ApiAsteroidNeoWsLookup}${ApiKey}`, {
+            method: 'GET',
+            headers: AsteroidNeoWsOptions.headers
+        });
+
+        if(!CurrentCeresInformation.ok) {
+            throw new Error(`HTTP error! status: ${CurrentCeresInformation.status} : ${CurrentCeresInformation.statusText}`);
         }
-        else {
+
+        const body = await CurrentCeresInformation.json();
+
+        if (body) 
+        {
             //Break up the data
             console.log("\n\n====================-------------------------------------> AsteroidNeoWs Search API Data>\n");
             if(bNoDesignation)
             {
                 console.log(`- You did not pass in an asteroid designation number, so PKNine (Designation: ${AsteroidPKNine}) is being used by default.`);
                 console.log(`- A list of designations can be found here at the time of this writing: https://cneos.jpl.nasa.gov/`);
-            }
-            console.log(`Asteroid FOUND: ${AsteroidPKNine}`)
-            console.log(`Asteroid Name: ${response.body.name}\nPotentially Hazardous to Earth: ${response.body.is_potentially_hazardous_asteroid}`);
+                }
+                console.log(`Asteroid FOUND: ${AsteroidPKNine}`)
+                console.log(`Asteroid Name: ${body.name}\nPotentially Hazardous to Earth: ${body.is_potentially_hazardous_asteroid}`);
         }
-    });
+    }
+    catch (error) 
+    {
+        common.ErrorPrintFunc(error);
+    }
     //===End Get A Particular Asteroid
-
 }
-function GetAsteroidNeoWsData(ApiKey) {
+
+async function GetAsteroidNeoWsData(ApiKey) 
+{
     //======================Browse all AsteroidNeoWs Data
-    const CurrentBrowseInformation = request({ url: `${AsteroidNeoWsOptions.ApiAsteroidNeoWsBrowse}${ApiKey}`, json: true, headers: AsteroidNeoWsOptions.headers }, function (error, response) {
-        if (error) {
-            common.ErrorPrintFunc(error);
+    try
+    {
+        const url = `${AsteroidNeoWsOptions.ApiAsteroidNeoWsBrowse}${ApiKey}`;
+        const respone = await fetch(url);
+
+        if(!respone.ok) {
+            throw new Error(`HTTP error! status: ${respone.status} : ${respone.statusText}`);
         }
-        else {
+
+        const body = await respone.json();
             console.log("\n\n====================-------------------------------------> AsteroidNeoWs Browse API Data>\n");
             //Read out all Near Earth
             //  Ojects found
-            if (response.body.page.size) {
-                const nNumberOfNEOs = response.body.page.size;
+            if (body.page.size) {
+                const nNumberOfNEOs = body.page.size;
                 console.log(`Asteroids Returned from the Browse API:`);
                 console.log(`   Number of Asteroids: ${nNumberOfNEOs}`);
-                if (response.body.near_earth_objects) {
-                    const NearEarthObjects = response.body.near_earth_objects;
+                if (body.near_earth_objects) {
+                    const NearEarthObjects = body.near_earth_objects;
                     for (i = 0; i < nNumberOfNEOs; ++i) {
                         try {
                             const isHazardous = NearEarthObjects[i].is_potentially_hazardous_asteroid;
@@ -227,12 +257,14 @@ function GetAsteroidNeoWsData(ApiKey) {
             else {
                 common.PrintNoDataFoundFunc("ASTEROIDNEOWS API DATA");
             }
-        }
-    });
+    }
+    catch (error) {
+        common.ErrorPrintFunc(error);
+    }
     //===End Browse all AsteroidNeoWs Data
 }
 
-function GetAllAsteroidNeoWsData(ApiKey)
+async function GetAllAsteroidNeoWsData(ApiKey)
 {
     GetAsteroidNeoWsData(ApiKey);
     GetAsteroidByDesignation(ApiKey, -1);
