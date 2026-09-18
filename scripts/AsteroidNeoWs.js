@@ -1,6 +1,6 @@
 // MIT License
 
-// Copyright (c) 2025 Paul Elliott Hubbard
+// Copyright (c) 2025, 2026 Paul Elliott Hubbard
 
 //-----------This Node module calls data from 
 //------        From all available AsteroidNeoWs APIs

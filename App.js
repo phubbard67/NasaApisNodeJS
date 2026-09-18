@@ -1,6 +1,6 @@
 // MIT License
 
-// Copyright (c) 2025 Paul Elliott Hubbard
+// Copyright (c) 2025, 2026 Paul Elliott Hubbard
 
 const express = require('express');
 const app = express();
@@ -82,7 +82,6 @@ const OpenSesMe = () => {
 
 
 //----------------------------------------------Global Vars
-const request = require('request');
 const fs = require('fs');
 const ini = require('ini');
 const common = require('./scripts/commonModule');

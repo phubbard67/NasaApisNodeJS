@@ -13,7 +13,7 @@ I have also started a basic front end with HTML, CSS, Javascript and [W3Schools]
 
 ## Build
 It is built using NodeJS
-- To build, download the code and install npm v10.8.2 (or later, but this is the old version I use)
+- To build, download the code and install npm v24.21.0
 - Then, from the folder NasaApis/ open a terminal and run `npm install` or `npm -i`
 - To run, open a terminal in the folder with App.js and run the command  `node App.js`
 
