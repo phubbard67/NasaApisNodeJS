@@ -148,7 +148,7 @@ try{
     //      to support anomaly resolution and space science research, intelligent linkages, relationships, 
     //      cause-and-effects between space weather activities and comprehensive webservice API access to 
     //      information stored in DONKI."
-    DONKI.GetDONKIDataFunc(ApiKey);
+    //DONKI.GetDONKIDataFunc(ApiKey);
 
     ///TODO: Started working on a GUI using HTML, CSS and W3Schools, and I created a localhost express server.
     //        Just uncomment and go to http://localhost:3000/ in any browser from the 

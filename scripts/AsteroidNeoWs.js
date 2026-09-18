@@ -14,15 +14,15 @@ const CurrentDate = new Date();
 const DateInSevenDays = new Date();
 DateInSevenDays.setDate(CurrentDate.getDate() + 7);
 
-nDay = CurrentDate.getDate();
-strDay = common.GetTwoDigitStringFunc(nDay);
-nMonth = CurrentDate.getMonth() + 1;
-strMonth = common.GetTwoDigitStringFunc(nMonth);
+let nDay = CurrentDate.getDate();
+let strDay = common.GetTwoDigitStringFunc(nDay);
+let nMonth = CurrentDate.getMonth() + 1;
+let strMonth = common.GetTwoDigitStringFunc(nMonth);
 
-nSevenDays = DateInSevenDays.getDate();
-strSevenDays = common.GetTwoDigitStringFunc(nSevenDays);
-nMonthInSevenDays = DateInSevenDays.getMonth() + 1;
-strMonthInSevenDays = common.GetTwoDigitStringFunc(nMonthInSevenDays);
+let nSevenDays = DateInSevenDays.getDate();
+let strSevenDays = common.GetTwoDigitStringFunc(nSevenDays);
+let nMonthInSevenDays = DateInSevenDays.getMonth() + 1;
+let strMonthInSevenDays = common.GetTwoDigitStringFunc(nMonthInSevenDays);
 
 const AsteroidStartDate = `${CurrentDate.getFullYear()}-${strMonth}-${strDay}`;
 const AsteroidEndDate = `${DateInSevenDays.getFullYear()}-${strMonthInSevenDays}-${strSevenDays}`;
@@ -31,7 +31,7 @@ const AsteroidEndDate = `${DateInSevenDays.getFullYear()}-${strMonthInSevenDays}
 //----I am using PKNine as the default asteroid
 //     for no other reason than it is the default 
 //     that NASA uses. 
-const AsteroidPKNine = '3542519'
+let AsteroidPKNine = '3542519'
 
 const AsteroidNeoWsOptions = {
     //-------------------------------------------------Asteroid NeoWs
@@ -61,7 +61,7 @@ async function GetAsteroidNeoWsFeed(ApiKey)
             //Read out all Near Earth Ojects found
 
             if (body) {
-                AsteroidFeedBody = body;
+                let AsteroidFeedBody = body;
 
                 if (AsteroidFeedBody.element_count) {
                     const nNumberOfNEOs = AsteroidFeedBody.element_count;
@@ -91,15 +91,15 @@ async function GetAsteroidNeoWsFeed(ApiKey)
                                                 let approchYearBuffer = dateBuff.substring(0, 4);
                                                 let intYearBuffer = parseInt(approchYearBuffer);
 
-                                                j = 0;
+                                                let k = 0;
                                                 while (intYearBuffer < CurrentDate.getFullYear()) {
-                                                    dateBuff = PotentialCloseCallDates[j].close_approach_date;
+                                                    dateBuff = PotentialCloseCallDates[k].close_approach_date;
                                                     approchYearBuffer = dateBuff.substring(0, 4);
                                                     intYearBuffer = parseInt(approchYearBuffer);
-                                                    j++;
+                                                    k++;
                                                 }
-                                                console.log(`----- Next Planet of Close Approach: ${PotentialCloseCallDates[j].orbiting_body}`);
-                                                console.log(`----- Time of Close Approach to ${PotentialCloseCallDates[j].orbiting_body}: ${PotentialCloseCallDates[j].close_approach_date_full}\n`);
+                                                console.log(`----- Next Planet of Close Approach: ${PotentialCloseCallDates[k].orbiting_body}`);
+                                                console.log(`----- Time of Close Approach to ${PotentialCloseCallDates[k].orbiting_body}: ${PotentialCloseCallDates[k].close_approach_date_full}\n`);
                                             }
                                             console.log(` ^^^^^^^^^^^^^^POTENTIALLY HAZARDOUS TO EARTH^^^^^^^^^^^^^^\n`);
                                         }
@@ -133,23 +133,22 @@ async function GetAsteroidNeoWsFeed(ApiKey)
 
 async function GetAsteroidByDesignation(ApiKey, nDesignation) 
 {
+    let bNoDesignation = false;
+    var ApiAsteroidNeoWsLookup = AsteroidNeoWsOptions.ApiAsteroidNeoWsLookup;
 
-    bNoDesignation = false;
-
-    if (nDesignation && nDesignation > -1) {
-        AsteroidPKNine = nDesignation;
+    if (Number.isFinite(Number(nDesignation)) && String(nDesignation).length > 0) {
+       ApiAsteroidNeoWsLookup = `https://api.nasa.gov/neo/rest/v1/neo/${nDesignation}?api_key=`;
     }
     else{
         bNoDesignation = true;
+        nDesignation = AsteroidPKNine;
     }
 
     try
     {
         //======================Get A particular Asteroid
-        const CurrentCeresInformation = await fetch(`${AsteroidNeoWsOptions.ApiAsteroidNeoWsLookup}${ApiKey}`, {
-            method: 'GET',
-            headers: AsteroidNeoWsOptions.headers
-        });
+        const url = `${ApiAsteroidNeoWsLookup}${ApiKey}`;
+        const CurrentCeresInformation = await fetch(url);
 
         if(!CurrentCeresInformation.ok) {
             throw new Error(`HTTP error! status: ${CurrentCeresInformation.status} : ${CurrentCeresInformation.statusText}`);
@@ -163,10 +162,10 @@ async function GetAsteroidByDesignation(ApiKey, nDesignation)
             console.log("\n\n====================-------------------------------------> AsteroidNeoWs Search API Data>\n");
             if(bNoDesignation)
             {
-                console.log(`- You did not pass in an asteroid designation number, so PKNine (Designation: ${AsteroidPKNine}) is being used by default.`);
+                console.log(`- You did not pass in an asteroid designation number, or the number string was invalid, so PKNine (Designation: ${AsteroidPKNine}) is being used by default.`);
                 console.log(`- A list of designations can be found here at the time of this writing: https://cneos.jpl.nasa.gov/`);
                 }
-                console.log(`Asteroid FOUND: ${AsteroidPKNine}`)
+                console.log(`Asteroid FOUND: ${nDesignation}`);
                 console.log(`Asteroid Name: ${body.name}\nPotentially Hazardous to Earth: ${body.is_potentially_hazardous_asteroid}`);
         }
     }
@@ -199,12 +198,12 @@ async function GetAsteroidNeoWsData(ApiKey)
                 console.log(`   Number of Asteroids: ${nNumberOfNEOs}`);
                 if (body.near_earth_objects) {
                     const NearEarthObjects = body.near_earth_objects;
-                    for (i = 0; i < nNumberOfNEOs; ++i) {
+                    for (let i = 0; i < nNumberOfNEOs; ++i) {
                         try {
                             const isHazardous = NearEarthObjects[i].is_potentially_hazardous_asteroid;
                             if (isHazardous == true) {
                                 console.log(`\n !!!!!!!!!!!!!!POTENTIALLY HAZARDOUS TO EARTH!!!!!!!!!!!!!!\n`);
-                                if (NearEarthObjects[i].name) {
+                                if (NearEarthObjects && NearEarthObjects[i] && NearEarthObjects.length > i && NearEarthObjects[i].name) {
                                     console.log(`----- Asteroid Name: ${NearEarthObjects[i].name}`);
                                 }
                                 else {
@@ -217,9 +216,9 @@ async function GetAsteroidNeoWsData(ApiKey)
                                     let approchYearBuffer = dateBuff.substring(0, 4);
                                     let intYearBuffer = parseInt(approchYearBuffer);
 
-                                    j = 0;
+                                    let j = 0;
                                     while (intYearBuffer < CurrentDate.getFullYear()) {
-                                        if (PotentialCloseCallDates[j].close_approach_date) {
+                                        if (PotentialCloseCallDates[j] && PotentialCloseCallDates.length > j && PotentialCloseCallDates[j].close_approach_date) {
                                             dateBuff = PotentialCloseCallDates[j].close_approach_date;
                                             approchYearBuffer = dateBuff.substring(0, 4);
                                             intYearBuffer = parseInt(approchYearBuffer);
@@ -266,9 +265,10 @@ async function GetAsteroidNeoWsData(ApiKey)
 
 async function GetAllAsteroidNeoWsData(ApiKey)
 {
-    GetAsteroidNeoWsData(ApiKey);
-    GetAsteroidByDesignation(ApiKey, -1);
-    GetAsteroidNeoWsFeed(ApiKey);
+    await GetAsteroidNeoWsData(ApiKey);
+    await GetAsteroidByDesignation(ApiKey, '3542518');
+    await GetAsteroidByDesignation(ApiKey, '');
+    await GetAsteroidNeoWsFeed(ApiKey);
 }
 
 module.exports = {
