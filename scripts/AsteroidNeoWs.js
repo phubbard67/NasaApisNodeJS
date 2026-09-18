@@ -56,7 +56,7 @@ async function GetAsteroidNeoWsFeed(ApiKey)
             throw new Error(`HTTP error! status: ${response.status} : ${response.statusText}`);
         }
 
-        const body = await respone.json();
+        const body = await response.json();
         console.log("\n\n====================-------------------------------------> AsteroidNeoWs Feed API Data for the Next Seven Days>\n");
             //Read out all Near Earth Ojects found
 
@@ -183,13 +183,13 @@ async function GetAsteroidNeoWsData(ApiKey)
     try
     {
         const url = `${AsteroidNeoWsOptions.ApiAsteroidNeoWsBrowse}${ApiKey}`;
-        const respone = await fetch(url);
+        const response = await fetch(url);
 
-        if(!respone.ok) {
-            throw new Error(`HTTP error! status: ${respone.status} : ${respone.statusText}`);
+        if(!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status} : ${response.statusText}`);
         }
 
-        const body = await respone.json();
+        const body = await response.json();
             console.log("\n\n====================-------------------------------------> AsteroidNeoWs Browse API Data>\n");
             //Read out all Near Earth
             //  Ojects found
