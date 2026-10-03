@@ -26,7 +26,7 @@ const DONKIStartDate = `${DateSevenDaysAgo.getFullYear()}-${strMonthSevenDaysAgo
 
 //-------InterPlanetary Shock Specific Vars
 const DateAboutOneYearAgo = new Date();
-DateAboutOneYearAgo.setDate(CurrentDate.getDate() - 365);
+DateAboutOneYearAgo.setDate(CurrentDate.getDate() - 60);
 const DONKIIPSStartDate = `${DateAboutOneYearAgo.getFullYear()}-${common.GetTwoDigitStringFunc(DateAboutOneYearAgo.getMonth() + 1)}-${common.GetTwoDigitStringFunc(DateAboutOneYearAgo.getDate())}`
 const DONKIIPSEndDate = `${CurrentDate.getFullYear()}-${strMonth}-${strDay}`;
 
@@ -44,27 +44,27 @@ const DONKIBodyErrorTimeout = "upstream connect error or disconnect/reset before
 const DONKIAPIs = {
     //-------------------------------------------------DONKI
     //---DONKI - CME (Coronal Mass Ejection) for the past 7 days. 
-    ApiDONKICME: `https://api.nasa.gov/DONKI/CME?startDate=${DONKIStartDate}&endDate=${DONKIEndDate}&api_key=`,
+    ApiDONKICME: `https://ccmc.gsfc.nasa.gov/DONKI-API/get/CME?startDate=${DONKIStartDate}&endDate=${DONKIEndDate}&api_key=`,
     //---DONKI - CME (Coronal Mass Ejection) Analysis for the past 7 days
-    ApiDONKILookup: `https://api.nasa.gov/DONKI/CMEAnalysis?startDate=${DONKIStartDate}&endDate=${DONKIEndDate}&mostAccurateOnly=true&speed=500&halfAngle=30&catalog=ALL&api_key=`,
+    ApiDONKILookup: `https://ccmc.gsfc.nasa.gov/DONKI-API/get/CMEAnalysis?startDate=${DONKIStartDate}&endDate=${DONKIEndDate}&mostAccurateOnly=true&speed=500&halfAngle=30&catalog=ALL&api_key=`,
     //---DONKI - GeoMagnetic Storms (GST) for the past 7 days
-    ApiDONKIGST: `https://api.nasa.gov/DONKI/GST?startDate=${DONKIStartDate}&endDate=${DONKIEndDate}&api_key=`,
+    ApiDONKIGST: `https://ccmc.gsfc.nasa.gov/DONKI-API/get/GST?startDate=${DONKIStartDate}&endDate=${DONKIEndDate}&api_key=`,
     //---DONKI - Interplanetary Shock (IPS) for the past 7 days
-    ApiDONKIIPS: `https://api.nasa.gov/DONKI/IPS?startDate=${DONKIIPSStartDate}&endDate=${DONKIIPSEndDate}&api_key=`,
+    ApiDONKIIPS: `https://ccmc.gsfc.nasa.gov/DONKI-API/get/IPS?startDate=${DONKIIPSStartDate}&endDate=${DONKIIPSEndDate}&api_key=`,
     //---DONKI - Solar Flare (FLR) for the past 30 days
-    ApiDONKIFLR: `https://api.nasa.gov/DONKI/FLR?startDate=${DONKIThirtyDayStartDate}&endDate=${DONKIThirtyDayEndDate}&api_key=`,
+    ApiDONKIFLR: `https://ccmc.gsfc.nasa.gov/DONKI-API/get/FLR?startDate=${DONKIThirtyDayStartDate}&endDate=${DONKIThirtyDayEndDate}&api_key=`,
     //---DONKI - Solar Energetic Particles (SEP) for the past 30 days
-    ApiDONKISEP: `https://api.nasa.gov/DONKI/SEP?startDate=${DONKIThirtyDayStartDate}&endDate=${DONKIThirtyDayEndDate}&api_key=`,
+    ApiDONKISEP: `https://ccmc.gsfc.nasa.gov/DONKI-API/get/SEP?startDate=${DONKIThirtyDayStartDate}&endDate=${DONKIThirtyDayEndDate}&api_key=`,
     //---DONKI - Magnetopause Crossing (MPC) for the past 7 days
-    ApiDONKIMPC: `https://api.nasa.gov/DONKI/MPC?startDate=${DONKIStartDate}&endDate=${DONKIEndDate}&api_key=`,
+    ApiDONKIMPC: `https://ccmc.gsfc.nasa.gov/DONKI-API/get/MPC?startDate=${DONKIStartDate}&endDate=${DONKIEndDate}&api_key=`,
     //---DONKI - Radiation Belt Enhancement (RBE) for the past 7 days
-    ApiDONKIRBE: `https://api.nasa.gov/DONKI/RBE?startDate=${DONKIStartDate}&endDate=${DONKIEndDate}&api_key=`,
+    ApiDONKIRBE: `https://ccmc.gsfc.nasa.gov/DONKI-API/get/RBE?startDate=${DONKIStartDate}&endDate=${DONKIEndDate}&api_key=`,
     //---DONKI - Height Speed Stream (HSS) for the past 7 days
-    ApiDONKIHSS: `https://api.nasa.gov/DONKI/HSS?startDate=${DONKIStartDate}&endDate=${DONKIEndDate}&api_key=`,
+    ApiDONKIHSS: `https://ccmc.gsfc.nasa.gov/DONKI-API/get/HSS?startDate=${DONKIStartDate}&endDate=${DONKIEndDate}&api_key=`,
     //---DONKI - WSA+EnlilSimulation for the past 7 days
-    ApiDONKIWsaElilSimulation: `https://api.nasa.gov/DONKI/WSAEnlilSimulations?startDate=${DONKIStartDate}&endDate=${DONKIEndDate}&api_key=`,
+    ApiDONKIWsaElilSimulation: `https://ccmc.gsfc.nasa.gov/DONKI-API/get/WSAEnlilSimulations?startDate=${DONKIStartDate}&endDate=${DONKIEndDate}&api_key=`,
     //---DONKI - DONKI Notifactions for the past 7 days
-    ApiDONKINotifications: `https://api.nasa.gov/DONKI/notifications?startDate=${DONKIStartDate}&endDate=${DONKIEndDate}&api_key=`,
+    ApiDONKINotifications: `https://ccmc.gsfc.nasa.gov/DONKI-API/get/notifications?startDate=${DONKIStartDate}&endDate=${DONKIEndDate}&api_key=`,
 }
 
 async function GetDONKINotifications(ApiKey) {
@@ -73,6 +73,7 @@ async function GetDONKINotifications(ApiKey) {
         const response = await fetch(url);
 
         if (!response.ok) {
+            common.ErrorPrintFunc(`DONKI NOTIFICATION API RESPONSE ERROR: ${response.status} : ${response.statusText}`);
             throw new Error(`HTTP error! status: ${response.status} : ${response.statusText}`);
         }
 
@@ -82,13 +83,7 @@ async function GetDONKINotifications(ApiKey) {
         console.log(`Notifications Data Start Time: ${DONKIStartDate}`);
         console.log(`Notifications Data End Time: ${DONKIEndDate}\n`);
 
-        if (response.status != 200) {
-            common.ErrorPrintFunc(`DONKI NOTIFICATION API RESPONSE ERROR: ${response.status} : ${response.statusText}`);
-            if (body !== undefined && body !== null && body !== "") {
-                common.ErrorPrintFunc(`DONKI NOTIFICATION BODY RETURNED ERROR: ${body}`);
-            }
-        }
-        else if (Array.isArray(body) && body.length > 0) {
+        if (Array.isArray(body) && body.length > 0) {
             const Messages = body;
             for (const Message in Messages) {
                 if (body.hasOwnProperty.call(Messages, Message)) {
@@ -135,6 +130,7 @@ async function GetDONKINotifications(ApiKey) {
 
     } catch (error) {
         common.ErrorPrintFunc(error);
+        throw new Error(`DONKI NOTIFICATION API RESPONSE ERROR: ${error}`);
     }
 }
 
@@ -145,6 +141,7 @@ async function GetDONKICME(ApiKey) {
         const response = await fetch(url);
 
         if (!response.ok) {
+            common.ErrorPrintFunc(`CME API RESPONSE ERROR: ${response.status} : ${response.statusText}`);
             throw new Error(`HTTP error! status: ${response.status} : ${response.statusText}`);
         }
 
@@ -153,10 +150,8 @@ async function GetDONKICME(ApiKey) {
         common.PrintHeaderFunc("DONKI Coronal Mass Ejections API Data for the Past Seven Days\n");
         console.log(`CME Data Start Time: ${DONKIStartDate}`);
         console.log(`CME Data End Time: ${DONKIEndDate}\n`);
-        if (body == DONKIBodyError || body == DONKIBodyErrorTimeout) {
-            common.ErrorPrintFunc(`CME BODY ERROR RETURN: ${body}`);
-        }
-        else if (Array.isArray(body) && body.length > 0) {
+
+        if (Array.isArray(body) && body.length > 0) {
             const CMEData = body;
             for (const CMEActivity in CMEData) {
                 if (body.hasOwnProperty.call(CMEData, CMEActivity)) {
@@ -200,6 +195,7 @@ async function GetDONKICME(ApiKey) {
     }
     catch (error) {
         common.ErrorPrintFunc(error);
+        throw new Error(`CME API RESPONSE ERROR: ${error}`);
     }
 }
 
@@ -209,6 +205,7 @@ async function GetDONKIGST(ApiKey) {
         const response = await fetch(url);
 
         if (!response.ok) {
+            common.ErrorPrintFunc(`GST API RESPONSE ERROR: ${response.status} : ${response.statusText}`);
             throw new Error(`HTTP error! status: ${response.status} : ${response.statusText}`);
         }
 
@@ -218,10 +215,7 @@ async function GetDONKIGST(ApiKey) {
         console.log(`GST Data Start Time: ${DONKIStartDate}`);
         console.log(`GST Data End Time: ${DONKIEndDate}\n`);
 
-        if (body == DONKIBodyError || body == DONKIBodyErrorTimeout) {
-            common.ErrorPrintFunc(`GST BODY ERROR RETURN: ${body}`);
-        }
-        else if (Array.isArray(body) && body.length > 0) {
+        if (Array.isArray(body) && body.length > 0) {
             const GSTData = body;
             let nCount = 0;
 
@@ -286,6 +280,7 @@ async function GetDONKIGST(ApiKey) {
     }
     catch (error) {
         common.ErrorPrintFunc(error);
+        throw new Error(`GST API RESPONSE ERROR: ${error}`);
     }
 }
 
@@ -295,96 +290,93 @@ async function GetDONKICMEAnalysis(ApiKey) {
         const response = await fetch(url);
 
         if (!response.ok) {
+            common.ErrorPrintFunc(`CME ANALYSIS API RESPONSE ERROR: ${response.status} : ${response.statusText}`);
             throw new Error(`HTTP error! status: ${response.status} : ${response.statusText}`);
         }
 
         const body = await response.json();
 
-        if (body == DONKIBodyError || body == DONKIBodyErrorTimeout) {
-            common.ErrorPrintFunc(`CME ANALYSIS BODY ERROR RETURN: ${body}`);
-        }
-        else {
-            common.PrintHeaderFunc("DONKI Coronal Mass Ejections Analysis API Data for the Past Seven Days");
-            console.log(`CME Data Start Time: ${DONKIStartDate}`);
-            console.log(`CME Data End Time: ${DONKIEndDate}\n`);
+        common.PrintHeaderFunc("DONKI Coronal Mass Ejections Analysis API Data for the Past Seven Days");
+        console.log(`CME Data Start Time: ${DONKIStartDate}`);
+        console.log(`CME Data End Time: ${DONKIEndDate}\n`);
 
-            if (Array.isArray(body) && body.length > 0) {
-                const CMEData = body;
-                for (const CMEActivity in CMEData) {
-                    //Example Return data: 
-                    // time21_5: '2025-12-08T04:41Z',
-                    // latitude: 11,
-                    // longitude: 11,
-                    // halfAngle: 34,
-                    // speed: 767,
-                    // type: 'C',
-                    // isMostAccurate: true,
-                    // associatedCMEID: '2025-12-08T01:38:00-CME-001',
-                    // associatedCMEstartTime: '2025-12-08T01:38Z',
-                    // note: 'Measurement based on fit in STEREO A COR2 with visible source location.',
-                    // associatedCMELink: 'https://webtools.ccmc.gsfc.nasa.gov/DONKI/view/CME/43340/-1',
-                    // catalog: 'M2M_CATALOG',
-                    // featureCode: 'LE',
-                    // dataLevel: '0',
-                    // measurementTechnique: 'SWPC_CAT',
-                    // imageType: 'running difference',
-                    // tilt: null,
-                    // minorHalfWidth: null,
-                    // speedMeasuredAtHeight: null,
-                    // submissionTime: '2025-12-08T14:16Z',
-                    // versionId: 1,
-                    // link: 
-                    if (body.hasOwnProperty.call(CMEData, CMEActivity)) {
-                        console.log("------------------------------------------------------- CME ANALYSIS FOUND");
-                        let CMEEntry = CMEData[CMEActivity];
+        if (Array.isArray(body) && body.length > 0) {
+            const CMEData = body;
+            for (const CMEActivity in CMEData) {
+                //Example Return data: 
+                // time21_5: '2025-12-08T04:41Z',
+                // latitude: 11,
+                // longitude: 11,
+                // halfAngle: 34,
+                // speed: 767,
+                // type: 'C',
+                // isMostAccurate: true,
+                // associatedCMEID: '2025-12-08T01:38:00-CME-001',
+                // associatedCMEstartTime: '2025-12-08T01:38Z',
+                // note: 'Measurement based on fit in STEREO A COR2 with visible source location.',
+                // associatedCMELink: 'https://webtools.ccmc.gsfc.nasa.gov/DONKI/view/CME/43340/-1',
+                // catalog: 'M2M_CATALOG',
+                // featureCode: 'LE',
+                // dataLevel: '0',
+                // measurementTechnique: 'SWPC_CAT',
+                // imageType: 'running difference',
+                // tilt: null,
+                // minorHalfWidth: null,
+                // speedMeasuredAtHeight: null,
+                // submissionTime: '2025-12-08T14:16Z',
+                // versionId: 1,
+                // link: 
+                if (body.hasOwnProperty.call(CMEData, CMEActivity)) {
+                    console.log("------------------------------------------------------- CME ANALYSIS FOUND");
+                    let CMEEntry = CMEData[CMEActivity];
 
-                        if (CMEEntry.associatedCMEID) {
-                            console.log(`-------------> CME ID: ${CMEEntry.associatedCMEID}`);
-                        }
-                        else {
-                            common.PrintNoDataFoundFunc("CME ID");
-                        }
+                    if (CMEEntry.associatedCMEID) {
+                        console.log(`-------------> CME ID: ${CMEEntry.associatedCMEID}`);
+                    }
+                    else {
+                        common.PrintNoDataFoundFunc("CME ID");
+                    }
 
-                        if (CMEEntry.time21_5) {
-                            console.log(`--- CME Time: ${CMEEntry.time21_5}`);
-                        }
-                        else {
-                            common.PrintNoDataFoundFunc("CME TIME");
-                        }
+                    if (CMEEntry.time21_5) {
+                        console.log(`--- CME Time: ${CMEEntry.time21_5}`);
+                    }
+                    else {
+                        common.PrintNoDataFoundFunc("CME TIME");
+                    }
 
-                        if (CMEEntry.note) {
-                            console.log(`--- CME Note:\n\t ${CMEEntry.note}`);
-                        }
-                        else {
-                            common.PrintNoDataFoundFunc("CME NOTE");
-                        }
+                    if (CMEEntry.note) {
+                        console.log(`--- CME Note:\n\t ${CMEEntry.note}`);
+                    }
+                    else {
+                        common.PrintNoDataFoundFunc("CME NOTE");
+                    }
 
-                        if (CMEEntry.associatedCMELink) {
-                            console.log(`--- CME ASSOCIATED LINK`);
-                            console.log(`-------------------> ${CMEEntry.associatedCMELink}`);
-                        }
-                        else {
-                            common.PrintNoDataFoundFunc("ASSOCIATED LINK");
-                        }
+                    if (CMEEntry.associatedCMELink) {
+                        console.log(`--- CME ASSOCIATED LINK`);
+                        console.log(`-------------------> ${CMEEntry.associatedCMELink}`);
+                    }
+                    else {
+                        common.PrintNoDataFoundFunc("ASSOCIATED LINK");
+                    }
 
-                        if (CMEEntry.link) {
-                            console.log(`--- CME LINK`);
-                            console.log(`-------------------> ${CMEEntry.link}\n`);
-                        }
-                        else {
-                            common.PrintNoDataFoundFunc("CME LINK");
-                            console.log("\n\n");
-                        }
+                    if (CMEEntry.link) {
+                        console.log(`--- CME LINK`);
+                        console.log(`-------------------> ${CMEEntry.link}\n`);
+                    }
+                    else {
+                        common.PrintNoDataFoundFunc("CME LINK");
+                        console.log("\n\n");
                     }
                 }
             }
-            else {
-                console.log("\nNO CME ANALYSIS INFORMATION WAS RETURED FOR THE LAST 7 DAYS\n")
-            }
+        }
+        else {
+            console.log("\nNO CME ANALYSIS INFORMATION WAS RETURED FOR THE LAST 7 DAYS\n")
         }
     }
     catch (error) {
         common.ErrorPrintFunc(error);
+        throw new Error(`CME ANALYSIS API RESPONSE ERROR: ${error}`);
     }
 }
 
@@ -405,18 +397,13 @@ async function GetIPSData(ApiKey) {
         const response = await fetch(url);
 
         if (!response.ok) {
+            common.ErrorPrintFunc(`IPS API RESPONSE ERROR: ${response.status} : ${response.statusText}`);
             throw new Error(`HTTP error! status: ${response.status} : ${response.statusText}`);
         }
 
         const body = await response.json();
 
-        if (response.status != 200) {
-            if (body == DONKIBodyError || body == DONKIBodyErrorTimeout) {
-                common.ErrorPrintFunc(`IPS BODY ERROR RETURN: ${body}`);
-            }
-        }
-
-        else if (Array.isArray(body) && body.length > 0) {
+        if (Array.isArray(body) && body.length > 0) {
 
             let IPSBody = body;
 
@@ -481,6 +468,7 @@ async function GetIPSData(ApiKey) {
     }
     catch (error) {
         common.ErrorPrintFunc(error);
+        throw new Error(`IPS API RESPONSE ERROR: ${error.status} : ${error.statusText}`);
     }
 }
 
@@ -490,6 +478,7 @@ async function GetSolarFlareData(ApiKey) {
         const response = await fetch(url);
 
         if (!response.ok) {
+            common.ErrorPrintFunc(`SOLAR FLARE API RESPONSE ERROR: ${response.status} : ${response.statusText}`);
             throw new Error(`HTTP error! status: ${response.status} : ${response.statusText}`);
         }
 
@@ -514,10 +503,8 @@ async function GetSolarFlareData(ApiKey) {
         common.PrintHeaderFunc("DONKI Solar Flare (FLR) API Data for the Past 30 Days");
         console.log(`DONKI FLR Data Start Date: ${DONKIThirtyDayStartDate}`);
         console.log(`DONKI FLR Data End Date: ${DONKIThirtyDayEndDate}`);
-        if (body == DONKIBodyError || body == DONKIBodyErrorTimeout) {
-            common.ErrorPrintFunc(`SOLAR FLARE BODY ERROR RETURN: ${body}`);
-        }
-        else if (Array.isArray(body) && body.length > 0) {
+
+        if (Array.isArray(body) && body.length > 0) {
             const SolarFlareData = body;
             for (const SolarFlares in SolarFlareData) {
                 if (SolarFlareData.hasOwnProperty.call(SolarFlareData, SolarFlares)) {
@@ -603,6 +590,7 @@ async function GetSolarFlareData(ApiKey) {
 
     } catch (error) {
         common.ErrorPrintFunc(error);
+        throw new Error(`SOLAR FLARE API RESPONSE ERROR: ${error}`);
     }
 }
 
@@ -612,6 +600,7 @@ async function GetDONKISEPData(ApiKey) {
         const response = await fetch(url);
 
         if (!response.ok) {
+            common.ErrorPrintFunc(`SEP API RESPONSE ERROR: ${response.status} : ${response.statusText}`);
             throw new Error(`HTTP error! status: ${response.status} : ${response.statusText}`);
         }
 
@@ -620,10 +609,7 @@ async function GetDONKISEPData(ApiKey) {
         console.log(`DONKI SEP Data Start Date: ${DONKIThirtyDayStartDate}`);
         console.log(`DONKI SEP Data End Date: ${DONKIThirtyDayEndDate}`);
 
-        if (body == DONKIBodyError || body == DONKIBodyErrorTimeout) {
-            common.ErrorPrintFunc(`SEP BODY ERROR RETURN: ${body}`);
-        }
-        else if (Array.isArray(body) && body.length > 0) {
+        if (Array.isArray(body) && body.length > 0) {
             //Example Body Returned
             // ====================------------------------------------------> DONKI Solar Energetic Particle (SEP) API Data for the Past 30 Days
             // DONKI SEP Data Start Date: 2026-01-21
@@ -677,6 +663,7 @@ async function GetDONKISEPData(ApiKey) {
     }
     catch (error) {
         common.ErrorPrintFunc(error);
+        throw new Error(`SEP API RESPONSE ERROR: ${error}`);
     }
 }
 
@@ -688,7 +675,7 @@ async function GetDONKIData(ApiKey) {
     await GetIPSData(ApiKey);
     await GetSolarFlareData(ApiKey);
     //TODO: Up next is the SEP (Solar Energetic Particle)
-    //GetDONKISEPData(ApiKey);
+    //await GetDONKISEPData(ApiKey);
 
 }
 
@@ -699,5 +686,5 @@ module.exports = {
     GetDONKIGSTFunc: GetDONKIGST,
     GetDONKIIPSFunc: GetIPSData,
     GetDONKIFLRFunc: GetSolarFlareData,
-    //GetDONKISEPFunc: GetDONKISEPData
+    GetDONKISEPFunc: GetDONKISEPData
 }
