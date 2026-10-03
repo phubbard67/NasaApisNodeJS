@@ -114,11 +114,12 @@ async function GetDONKINotifications(ApiKey) {
                     else {
                         common.PrintNoDataFoundFunc("NOTIFICATION TIMESTAMP");
                     }
-                    if (MessageData.messageBody) {
-                        console.log(`--> Notification:\n${MessageData.messageBody}`);
+                    if (MessageData.messageBody && MessageData.messageBody.length > 4) {
+                        console.log(`--> Notification:\n ${MessageData.messageBody}`)
                     }
                     else {
                         common.PrintNoDataFoundFunc("NOTIFICATION BODY");
+                        console.log(`\n`)
                     }
 
                 }
