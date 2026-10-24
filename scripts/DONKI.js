@@ -50,7 +50,7 @@ const DONKIAPIs = {
     //---DONKI - GeoMagnetic Storms (GST) for the past 7 days
     ApiDONKIGST: `https://ccmc.gsfc.nasa.gov/DONKI-API/get/GST?startDate=${DONKIStartDate}&endDate=${DONKIEndDate}&api_key=`,
     //---DONKI - Interplanetary Shock (IPS) for the past 7 days
-    ApiDONKIIPS: `https://ccmc.gsfc.nasa.gov/DONKI-API/get/IPS?startDate=${DONKIIPSStartDate}&endDate=${DONKIIPSEndDate}&api_key=`,
+    ApiDONKIIPS: `https://ccmc.gsfc.nasa.gov/DONKI-API/get/IPS?startDate=${DONKIThirtyDayStartDate}&endDate=${DONKIThirtyDayEndDate}&api_key=`,
     //---DONKI - Solar Flare (FLR) for the past 30 days
     ApiDONKIFLR: `https://ccmc.gsfc.nasa.gov/DONKI-API/get/FLR?startDate=${DONKIThirtyDayStartDate}&endDate=${DONKIThirtyDayEndDate}&api_key=`,
     //---DONKI - Solar Energetic Particles (SEP) for the past 30 days
@@ -409,9 +409,9 @@ async function GetIPSData(ApiKey) {
             let IPSBody = body;
 
             //Print that data! 
-            common.PrintHeaderFunc("DONKI Interplanetary Shock (IPS) API Data for the Past 365 Days");
-            console.log(`DONKI IPS Data Start Date: ${DONKIIPSStartDate}`);
-            console.log(`DONKI IPS Data End Date: ${DONKIIPSEndDate}\n`);
+            common.PrintHeaderFunc("DONKI Interplanetary Shock (IPS) API Data for the Past 30 Days");
+            console.log(`DONKI IPS Data Start Date: ${DONKIThirtyDayStartDate}`);
+            console.log(`DONKI IPS Data End Date: ${DONKIThirtyDayEndDate}\n`);
 
             if (Array.isArray(IPSBody) && IPSBody.length > 0) {
                 for (const IPSEntry of IPSBody) {
@@ -463,7 +463,7 @@ async function GetIPSData(ApiKey) {
             }
         }
         else {
-            console.log("\nVALID RESPONSE WAS RECEIVED BUT NO DATA WAS RETURNED!!!\n");
+            console.log("\nNO IPS DATA FOR THE PAST 30 DAYS!!!\n");
         }
 
     }
@@ -586,7 +586,7 @@ async function GetSolarFlareData(ApiKey) {
             }
         }
         else {
-            console.log("VALID RESPONSE WAS RECEIVED BUT NO DATA WAS RETURNED!!!");
+            console.log("NO SOLAR FLARE DATA FOR THE PAST 30 DAYS!!!");
         }
 
     } catch (error) {
@@ -659,7 +659,7 @@ async function GetDONKISEPData(ApiKey) {
             }
         }
         else {
-            console.log("\nVALID RESPONSE WAS RECEIVED BUT NO DATA WAS RETURNED!!!\n");
+            console.log("\nNO SEP DATA FOR THE PAST 30 DAYS!!!\n");
         }
     }
     catch (error) {
@@ -669,6 +669,49 @@ async function GetDONKISEPData(ApiKey) {
 }
 
 async function GetDONKIMPC(ApiKey) {
+    ///--------------Example MPC Body Returned
+    // [
+    //   {
+    //     mpcID: '2026-10-04T07:26:00-MPC-001',
+    //     eventTime: '2026-10-04T07:26Z',
+    //     instruments: [ [Object] ],
+    //     link: 'https://ccmc.gsfc.nasa.gov/DONKI/view/MPC/48953/-1',
+    //     linkedEvents: [ [Object], [Object] ],
+    //     sentNotifications: [ [Object] ],
+    //     submissionTime: '2026-10-04T12:30Z',
+    //     versionId: 1
+    //   },
+    //   {
+    //     mpcID: '2026-10-10T15:33:00-MPC-001',
+    //     eventTime: '2026-10-10T15:33Z',
+    //     instruments: [ [Object] ],
+    //     link: 'https://ccmc.gsfc.nasa.gov/DONKI/view/MPC/49060/-1',
+    //     linkedEvents: [ [Object], [Object] ],
+    //     sentNotifications: [ [Object] ],
+    //     submissionTime: '2026-10-10T15:41Z',
+    //     versionId: 1
+    //   }
+    // ]
+    // -------Example MPC Sub opbject / MPC instance returned. 
+    // {
+    //   mpcID: '2026-10-04T07:26:00-MPC-001',
+    //   eventTime: '2026-10-04T07:26Z',
+    //   instruments: [ { displayName: 'MODEL: SWMF' } ],
+    //   link: 'https://ccmc.gsfc.nasa.gov/DONKI/view/MPC/48953/-1',
+    //   linkedEvents: [
+    //     { activityID: '2026-10-03T23:40:00-HSS-001' },
+    //     { activityID: '2026-10-03T23:41:00-IPS-001' }
+    //   ],
+    //   sentNotifications: [
+    //     {
+    //       messageID: '20261004-AL-001',
+    //       messageIssueTime: '2026-10-04T12:40Z',
+    //       messageURL: 'https://ccmc.gsfc.nasa.gov/DONKI/view/Alert/48954/1'
+    //     }
+    //   ],
+    //   submissionTime: '2026-10-04T12:30Z',
+    //   versionId: 1
+    // }
     try {
         const url = `${DONKIAPIs.ApiDONKIMPC}${ApiKey}`;
         const response = await fetch(url);
@@ -685,6 +728,7 @@ async function GetDONKIMPC(ApiKey) {
 
         if (Array.isArray(body) && body.length > 0) {
             const MPCBody = body;
+            console.log(`\nNumber of MPC Events Returned: ${MPCBody.length}\n`);
 
             for (const MPC in MPCBody) {
                 if (MPCBody.hasOwnProperty.call(MPCBody, MPC)) {
@@ -716,7 +760,7 @@ async function GetDONKIMPC(ApiKey) {
             }
         }
         else {
-            console.log("\nVALID RESPONSE WAS RECEIVED BUT NO DATA WAS RETURNED!!!\n");
+            console.log("\nNO MPC DATA FOR THE PAST 30 DAYS!!!\n");
         }
     }
     catch (error) {
