@@ -55,8 +55,8 @@ const DONKIAPIs = {
     ApiDONKIFLR: `https://ccmc.gsfc.nasa.gov/DONKI-API/get/FLR?startDate=${DONKIThirtyDayStartDate}&endDate=${DONKIThirtyDayEndDate}&api_key=`,
     //---DONKI - Solar Energetic Particles (SEP) for the past 30 days
     ApiDONKISEP: `https://ccmc.gsfc.nasa.gov/DONKI-API/get/SEP?startDate=${DONKIThirtyDayStartDate}&endDate=${DONKIThirtyDayEndDate}&api_key=`,
-    //---DONKI - Magnetopause Crossing (MPC) for the past 7 days
-    ApiDONKIMPC: `https://ccmc.gsfc.nasa.gov/DONKI-API/get/MPC?startDate=${DONKIStartDate}&endDate=${DONKIEndDate}&api_key=`,
+    //---DONKI - Magnetopause Crossing (MPC) for the past 30 days
+    ApiDONKIMPC: `https://ccmc.gsfc.nasa.gov/DONKI-API/get/MPC?startDate=${DONKIThirtyDayStartDate}&endDate=${DONKIThirtyDayEndDate}&api_key=`,
     //---DONKI - Radiation Belt Enhancement (RBE) for the past 7 days
     ApiDONKIRBE: `https://ccmc.gsfc.nasa.gov/DONKI-API/get/RBE?startDate=${DONKIStartDate}&endDate=${DONKIEndDate}&api_key=`,
     //---DONKI - Height Speed Stream (HSS) for the past 7 days
@@ -89,7 +89,7 @@ async function GetDONKINotifications(ApiKey) {
                 if (body.hasOwnProperty.call(Messages, Message)) {
                     const MessageData = Messages[Message];
 
-                    console.log("!!!!!!!!!!!!!!!!!!!!!!!!!--------------------------------------------------->>>>>>>>>>>>>>> DONKI NOTIFICATION FOUND")
+                    console.log("\n!!!!!!!!!!!!!!!!!!!!!!!!!--------------------------------------------------->>>>>>>>>>>>>>> DONKI NOTIFICATION FOUND")
                     if (MessageData.messageType) {
                         console.log(`\n------------------> Notification Type: ${MessageData.messageType}`);
                     }
@@ -668,6 +668,63 @@ async function GetDONKISEPData(ApiKey) {
     }
 }
 
+async function GetDONKIMPC(ApiKey) {
+    try {
+        const url = `${DONKIAPIs.ApiDONKIMPC}${ApiKey}`;
+        const response = await fetch(url);
+
+        if (!response.ok) {
+            common.ErrorPrintFunc(`MPC API RESPONSE ERROR: ${response.status} : ${response.statusText}`);
+            throw new Error(`HTTP error! status: ${response.status} : ${response.statusText}`);
+        }
+
+        const body = await response.json();
+        common.PrintHeaderFunc("DONKI Magnetopause Crossing (MPC) API Data for the Past 30 Days");
+        console.log(`DONKI MPC Data Start Date: ${DONKIThirtyDayStartDate}`);
+        console.log(`DONKI MPC Data End Date: ${DONKIThirtyDayEndDate}`);
+
+        if (Array.isArray(body) && body.length > 0) {
+            const MPCBody = body;
+
+            for (const MPC in MPCBody) {
+                if (MPCBody.hasOwnProperty.call(MPCBody, MPC)) {
+                    if (MPCBody[MPC].mpcID) {
+                        common.PrintSectionIDFunc("Magnetopause Crossing", `${MPCBody[MPC].mpcID}`);
+                    }
+                    else {
+                        common.PrintNoDataFoundFunc("MPC ID");
+                    }
+                    if (MPCBody[MPC].eventTime) {
+                        console.log(`--- MPC Event Time: ${MPCBody[MPC].eventTime}`);
+                    }
+                    else {
+                        common.PrintNoDataFoundFunc("MPC EVENT TIME");
+                    }
+                    if (MPCBody[MPC].submissionTime) {
+                        console.log(`--- MPC Submission Time: ${MPCBody[MPC].submissionTime}`);
+                    }
+                    else {
+                        common.PrintNoDataFoundFunc("MPC SUBMISSION TIME");
+                    }
+                    if (MPCBody[MPC].link) {
+                        common.PrintSectionLinkFunc("Magnetopause Crossing", `${MPCBody[MPC].link}`);
+                    }
+                    else {
+                        common.PrintNoDataFoundFunc("MPC LINK");
+                    }
+                }
+            }
+        }
+        else {
+            console.log("\nVALID RESPONSE WAS RECIEVED BUT NO DATA WAS RETURNED!!!\n");
+        }
+    }
+    catch (error) {
+        common.ErrorPrintFunc(error);
+        throw new Error(`MPC API RESPONSE ERROR: ${error}`);
+    }
+}
+
 async function GetDONKIData(ApiKey) {
     await GetDONKINotifications(ApiKey);
     await GetDONKICME(ApiKey);
@@ -675,8 +732,15 @@ async function GetDONKIData(ApiKey) {
     await GetDONKIGST(ApiKey);
     await GetIPSData(ApiKey);
     await GetSolarFlareData(ApiKey);
-    //TODO: Up next is the SEP (Solar Energetic Particle)
-    //await GetDONKISEPData(ApiKey);
+    await GetDONKISEPData(ApiKey);
+    //TODO: Magnetopause Crossing (MPC) API
+    await GetDONKIMPC(ApiKey);
+    //TODO: Radiation Belt Enhancement (RBE) API
+    //await GetDONKIRBE(ApiKey);
+    //TODO: Height Speed Stream (HSS) API
+    //await GetDONKIHSS(ApiKey);
+    //TODO: WSA+EnlilSimulation API
+    //await GetDONKIWsaElilSimulation(ApiKey);
 
 }
 
