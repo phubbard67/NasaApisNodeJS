@@ -163,7 +163,7 @@ async function GetAsteroidByDesignation(ApiKey, nDesignation)
             if(bNoDesignation)
             {
                 console.log(`- You did not pass in an asteroid designation number, or the number string was invalid, so PKNine (Designation: ${AsteroidPKNine}) is being used by default.`);
-                console.log(`- A list of designations can be found here at the time of this writing: https://cneos.jpl.nasa.gov/`);
+                console.log(`- There are various ways to look up different small body designations here: https://ssd.jpl.nasa.gov/tools/`);
                 }
                 console.log(`Asteroid FOUND: ${nDesignation}`);
                 console.log(`Asteroid Name: ${body.name}\nPotentially Hazardous to Earth: ${body.is_potentially_hazardous_asteroid}`);
