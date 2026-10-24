@@ -463,7 +463,7 @@ async function GetIPSData(ApiKey) {
             }
         }
         else {
-            console.log("\nVALID RESPONSE WAS RECIEVED BUT NO DATA WAS RETURNED!!!\n");
+            console.log("\nVALID RESPONSE WAS RECEIVED BUT NO DATA WAS RETURNED!!!\n");
         }
 
     }
@@ -586,7 +586,7 @@ async function GetSolarFlareData(ApiKey) {
             }
         }
         else {
-            console.log("VALID RESPONSE WAS RECIEVED BUT NO DATA WAS RETURNED!!!");
+            console.log("VALID RESPONSE WAS RECEIVED BUT NO DATA WAS RETURNED!!!");
         }
 
     } catch (error) {
@@ -653,13 +653,13 @@ async function GetDONKISEPData(ApiKey) {
                         common.PrintSectionLinkFunc("Solar Energetic Particle", `${SEPBody[SEP].link}`);
                     }
                     else {
-                        common.PrintNoDataFoundFunc("SEP SUBMISSION TIME");
+                        common.PrintNoDataFoundFunc("SEP LINK");
                     }
                 }
             }
         }
         else {
-            console.log("\nVALID RESPONSE WAS RECIEVED BUT NO DATA WAS RETURNED!!!\n");
+            console.log("\nVALID RESPONSE WAS RECEIVED BUT NO DATA WAS RETURNED!!!\n");
         }
     }
     catch (error) {
@@ -716,7 +716,7 @@ async function GetDONKIMPC(ApiKey) {
             }
         }
         else {
-            console.log("\nVALID RESPONSE WAS RECIEVED BUT NO DATA WAS RETURNED!!!\n");
+            console.log("\nVALID RESPONSE WAS RECEIVED BUT NO DATA WAS RETURNED!!!\n");
         }
     }
     catch (error) {
