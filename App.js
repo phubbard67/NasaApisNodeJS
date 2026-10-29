@@ -100,15 +100,15 @@ try{
     try{
         //Get the API File data:
         // NOTE: 
-        //  If you want to create your own .ini file:
+        //  IF you want to create your own .ini file:
         //      First, create the file and call it something like 'my_api_keys.ini' and place it 
         //        one folder location up from the App.js file (../my_api_keys.ini)
         //      Then, obtain an API key at https://api.nasa.gov
         //      Next, put the following code inside the my_api_keys.ini file to work with this API
         //          [NASA_API]
         //          API_KEY='yourApiKeyGoesBetweenTheseQuotes'
-        //      IF you do not wish to make an INI file, you can remove the 
-        //          ini file code and copy your api key directly into the ApiKey var 
+        //  ELSE you do not wish to make an INI file:
+        //          You can remove the ini file code and copy your api key directly into the ApiKey var 
         //          by replacing ApiDatabase.NASA_API.API_KEY with the API key string in between 
         //          quotes. Example ApiKey = 'yourApiKeyGoesBetweenTheseQuotes'. 
 
