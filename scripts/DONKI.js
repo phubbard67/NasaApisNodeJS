@@ -7,7 +7,7 @@
 //------        at this time, and displays some data of 
 //------        of interest. Its just a demo... for now. 
 //----------------------------------------------Global Vars
-const common = require('./commonModule');
+import common from './commonModule.js';
 const CurrentDate = new Date();
 const nDay = CurrentDate.getDate();
 const strDay = common.GetTwoDigitStringFunc(nDay);
@@ -27,18 +27,12 @@ const DONKIStartDate = `${DateSevenDaysAgo.getFullYear()}-${strMonthSevenDaysAgo
 //-------InterPlanetary Shock Specific Vars
 const DateAboutOneYearAgo = new Date();
 DateAboutOneYearAgo.setDate(CurrentDate.getDate() - 60);
-const DONKIIPSStartDate = `${DateAboutOneYearAgo.getFullYear()}-${common.GetTwoDigitStringFunc(DateAboutOneYearAgo.getMonth() + 1)}-${common.GetTwoDigitStringFunc(DateAboutOneYearAgo.getDate())}`
-const DONKIIPSEndDate = `${CurrentDate.getFullYear()}-${strMonth}-${strDay}`;
 
 //------Solar Flare Specific Vars
 const DateThirtyDaysAgo = new Date();
 DateThirtyDaysAgo.setDate(CurrentDate.getDate() - 30);
 const DONKIThirtyDayStartDate = `${DateThirtyDaysAgo.getFullYear()}-${common.GetTwoDigitStringFunc(DateThirtyDaysAgo.getMonth() + 1)}-${common.GetTwoDigitStringFunc(DateThirtyDaysAgo.getDate())}`
 const DONKIThirtyDayEndDate = `${CurrentDate.getFullYear()}-${strMonth}-${strDay}`;
-
-//-------Common DONKI Body Errors
-const DONKIBodyError = "upstream connect error or disconnect/reset before headers. retried and the latest reset reason: remote connection failure, transport failure reason: delayed connect error: Connection refused";
-const DONKIBodyErrorTimeout = "upstream connect error or disconnect/reset before headers. reset reason: connection timeout"
 
 //----------------------------DONKI APIs
 const DONKIAPIs = {
@@ -57,13 +51,13 @@ const DONKIAPIs = {
     ApiDONKISEP: `https://ccmc.gsfc.nasa.gov/DONKI-API/get/SEP?startDate=${DONKIThirtyDayStartDate}&endDate=${DONKIThirtyDayEndDate}&api_key=`,
     //---DONKI - Magnetopause Crossing (MPC) for the past 30 days
     ApiDONKIMPC: `https://ccmc.gsfc.nasa.gov/DONKI-API/get/MPC?startDate=${DONKIThirtyDayStartDate}&endDate=${DONKIThirtyDayEndDate}&api_key=`,
-    //---DONKI - Radiation Belt Enhancement (RBE) for the past 7 days
-    ApiDONKIRBE: `https://ccmc.gsfc.nasa.gov/DONKI-API/get/RBE?startDate=${DONKIStartDate}&endDate=${DONKIEndDate}&api_key=`,
-    //---DONKI - Height Speed Stream (HSS) for the past 7 days
-    ApiDONKIHSS: `https://ccmc.gsfc.nasa.gov/DONKI-API/get/HSS?startDate=${DONKIStartDate}&endDate=${DONKIEndDate}&api_key=`,
-    //---DONKI - WSA+EnlilSimulation for the past 7 days
+    //---DONKI - Radiation Belt Enhancement (RBE) for the past 30 days
+    ApiDONKIRBE: `https://ccmc.gsfc.nasa.gov/DONKI-API/get/RBE?startDate=${DONKIThirtyDayStartDate}&endDate=${DONKIThirtyDayEndDate}&api_key=`,
+    //---DONKI - Height Speed Stream (HSS) for the past 30 days
+    ApiDONKIHSS: `https://ccmc.gsfc.nasa.gov/DONKI-API/get/HSS?startDate=${DONKIThirtyDayStartDate}&endDate=${DONKIThirtyDayEndDate}&api_key=`,
+    //---DONKI - WSA+EnlilSimulation for the past 30 days
     ApiDONKIWsaElilSimulation: `https://ccmc.gsfc.nasa.gov/DONKI-API/get/WSAEnlilSimulations?startDate=${DONKIStartDate}&endDate=${DONKIEndDate}&api_key=`,
-    //---DONKI - DONKI Notifactions for the past 7 days
+    //---DONKI - DONKI Notifactions for the past 30 days
     ApiDONKINotifications: `https://ccmc.gsfc.nasa.gov/DONKI-API/get/notifications?startDate=${DONKIStartDate}&endDate=${DONKIEndDate}&api_key=`,
 }
 
@@ -769,6 +763,145 @@ async function GetDONKIMPC(ApiKey) {
     }
 }
 
+async function GetDONKIRBE(ApiKey) {
+    try {
+        const url = `${DONKIAPIs.ApiDONKIRBE}${ApiKey}`;
+        const response = await fetch(url);
+
+        if (!response.ok) {
+            common.ErrorPrintFunc(`RBE API RESPONSE ERROR: ${response.status} : ${response.statusText}`);
+            throw new Error(`HTTP error! status: ${response.status} : ${response.statusText}`);
+        }
+
+        const body = await response.json();
+        common.PrintHeaderFunc("DONKI Radiation Belt Enhancement (RBE) API Data for the Past 30 Days");
+        console.log(`DONKI RBE Data Start Date: ${DONKIThirtyDayStartDate}`);
+        console.log(`DONKI RBE Data End Date: ${DONKIThirtyDayEndDate}`);
+
+        if (Array.isArray(body) && body.length > 0) {
+            const RBEBody = body;
+            console.log(`\nNumber of RBE Events Returned: ${RBEBody.length}\n`);
+
+            for (const RBE in RBEBody) {
+                if (RBEBody.hasOwnProperty.call(RBEBody, RBE)) {
+                    if (RBEBody[RBE].rbeID) {
+                        common.PrintSectionIDFunc("Radiation Belt Enhancement", `${RBEBody[RBE].rbeID}`);
+                    }
+                    else {
+                        common.PrintNoDataFoundFunc("RBE ID");
+                    }
+                    if (RBEBody[RBE].eventTime) {
+                        console.log(`--- RBE Event Time: ${RBEBody[RBE].eventTime}`);
+                    }
+                    else{
+                        common.PrintNoDataFoundFunc("RBE Event Time");
+                    }
+                }
+            }
+        }
+                else {
+            console.log("\nNO RBE DATA FOR THE PAST 30 DAYS!!!\n");
+        }
+    }
+    catch (error) {
+        common.ErrorPrintFunc(error);
+        throw new Error(`RBE API RESPONSE ERROR: ${error}`);
+    }
+}
+
+async function GetDONKIHSS(ApiKey) {
+    try {
+        const url = `${DONKIAPIs.ApiDONKIHSS}${ApiKey}`;
+        const response = await fetch(url);
+
+        if (!response.ok) {
+            common.ErrorPrintFunc(`HSS API RESPONSE ERROR: ${response.status} : ${response.statusText}`);
+            throw new Error(`HTTP error! status: ${response.status} : ${response.statusText}`);
+        }
+
+        const body = await response.json();
+        common.PrintHeaderFunc("DONKI Height Speed Stream (HSS) API Data for the Past 30 Days");
+        console.log(`DONKI HSS Data Start Date: ${DONKIThirtyDayStartDate}`);
+        console.log(`DONKI HSS Data End Date: ${DONKIThirtyDayEndDate}`);
+
+        if (Array.isArray(body) && body.length > 0) {
+            const HSSBody = body;
+            console.log(`\nNumber of HSS Events Returned: ${HSSBody.length}\n`);
+
+            for (const HSS in HSSBody) {
+                if (HSSBody.hasOwnProperty.call(HSSBody, HSS)) {
+                    if (HSSBody[HSS].hssID) {
+                        common.PrintSectionIDFunc("Height Speed Stream", `${HSSBody[HSS].hssID}`);
+                    }
+                    else {
+                        common.PrintNoDataFoundFunc("HSS ID");
+                    }
+                    if (HSSBody[HSS].eventTime) {
+                        console.log(`--- HSS Event Time: ${HSSBody[HSS].eventTime}`);
+                    }
+                    else{
+                        common.PrintNoDataFoundFunc("HSS Event Time");
+                    }
+                }
+            }
+        }
+        else {
+            console.log("\nNO HSS DATA FOR THE PAST 30 DAYS!!!\n");
+        }
+    }
+    catch (error) {
+        common.ErrorPrintFunc(error);
+        throw new Error(`HSS API RESPONSE ERROR: ${error}`);
+    }
+}
+
+async function GetDONKIWsaElilSimulation(ApiKey) {
+    try {
+        const url = `${DONKIAPIs.ApiDONKIWsaElilSimulation}${ApiKey}`;
+        const response = await fetch(url);
+
+        if (!response.ok) {
+            common.ErrorPrintFunc(`WSA+Enlil Simulation API RESPONSE ERROR: ${response.status} : ${response.statusText}`);
+            throw new Error(`HTTP error! status: ${response.status} : ${response.statusText}`);
+        }
+
+        const body = await response.json();
+
+        common.PrintHeaderFunc("DONKI WSA+Enlil Simulation API Data for the Past 7 Days");
+        console.log(`DONKI WSA+Enlil Simulation Data Start Date: ${DONKIStartDate}`);
+        console.log(`DONKI WSA+Enlil Simulation Data End Date: ${DONKIEndDate}`);
+
+        if (Array.isArray(body) && body.length > 0) {
+            const WSAElilBody = body;
+            console.log(`\nNumber of WSA+Enlil Simulation Events Returned: ${WSAElilBody.length}\n`);
+
+            for (const WSAELIL in WSAElilBody) {
+                if (WSAElilBody.hasOwnProperty.call(WSAElilBody, WSAELIL)) {
+                    if (WSAElilBody[WSAELIL].simulationID) {
+                        common.PrintSectionIDFunc("WSA+Enlil Simulation", `${WSAElilBody[WSAELIL].simulationID}`);
+                    }
+                    else {
+                        common.PrintNoDataFoundFunc("WSA+Enlil Simulation ID");
+                    }
+                    if (WSAElilBody[WSAELIL].modelCompletionTime) {
+                        console.log(`--- WSA+Enlil Simulation Model Completion Time: ${WSAElilBody[WSAELIL].modelCompletionTime}`);
+                    }
+                    else{
+                        common.PrintNoDataFoundFunc("WSA+Enlil Simulation Model Completion Time");
+                    }
+                }
+            }
+        }
+        else {
+            console.log("\nNO WSA+Enlil Simulation DATA FOR THE PAST 7 DAYS!!!\n");
+        } 
+    }
+    catch (error) {
+        common.ErrorPrintFunc(error);
+        throw new Error(`WSA+Enlil Simulation API RESPONSE ERROR: ${error}`);
+    }
+}
+
 async function GetDONKIData(ApiKey) {
     await GetDONKINotifications(ApiKey);
     await GetDONKICME(ApiKey);
@@ -776,24 +909,25 @@ async function GetDONKIData(ApiKey) {
     await GetDONKIGST(ApiKey);
     await GetIPSData(ApiKey);
     await GetSolarFlareData(ApiKey);
+    //TODO: Finish Solar Energetic Particle (SEP) API
     await GetDONKISEPData(ApiKey);
-    //TODO: Magnetopause Crossing (MPC) API
+    //TODO: Finish Magnetopause Crossing (MPC) API
     await GetDONKIMPC(ApiKey);
-    //TODO: Radiation Belt Enhancement (RBE) API
-    //await GetDONKIRBE(ApiKey);
-    //TODO: Height Speed Stream (HSS) API
-    //await GetDONKIHSS(ApiKey);
-    //TODO: WSA+EnlilSimulation API
-    //await GetDONKIWsaElilSimulation(ApiKey);
+    //TODO: Finish Radiation Belt Enhancement (RBE) API
+    await GetDONKIRBE(ApiKey);
+    //TODO: Finish Height Speed Stream (HSS) API
+    await GetDONKIHSS(ApiKey);
+    //TODO: Finish WSA+EnlilSimulation API
+    await GetDONKIWsaElilSimulation(ApiKey);
 
 }
 
-module.exports = {
-    GetDONKIDataFunc: GetDONKIData,
-    GetDONKINotificationsFunc: GetDONKINotifications,
-    GetDONKICMEFunc: GetDONKICME,
-    GetDONKIGSTFunc: GetDONKIGST,
-    GetDONKIIPSFunc: GetIPSData,
-    GetDONKIFLRFunc: GetSolarFlareData,
-    GetDONKISEPFunc: GetDONKISEPData
-}
+export {
+    GetDONKIData as GetDONKIDataFunc,
+    GetDONKINotifications as GetDONKINotificationsFunc,
+    GetDONKICME as GetDONKICMEFunc,
+    GetDONKIGST as GetDONKIGSTFunc,
+    GetIPSData as GetDONKIIPSFunc,
+    GetSolarFlareData as GetDONKIFLRFunc,
+    GetDONKISEPData as GetDONKISEPFunc
+};

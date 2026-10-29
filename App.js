@@ -92,7 +92,7 @@ const CurrentDate = new Date();
 //--------------------Main App Functionality 
 try{
     console.clear();
-    console.log("\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
+    console.log("\n\n\n\n\n\n\nthis space is left somewhat intentionally somewhat empty\n\n\n\n\n\n\n");
     console.log(`<---------===============================---------> THE DATA STARTS HERE <---------=============================---------->`)
     console.log(`\n====Date: \n--------> ${CurrentDate}\n\n\n`);
 
